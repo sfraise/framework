@@ -1,0 +1,17 @@
+[01-Jan-2012 06:57:39] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting T_STRING or T_VARIABLE or T_NUM_STRING in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 228
+[01-Jan-2012 06:58:11] PHP Parse error:  syntax error, unexpected T_ENCAPSED_AND_WHITESPACE, expecting T_STRING or T_VARIABLE or T_NUM_STRING in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 228
+[01-Jan-2012 07:00:31] PHP Parse error:  syntax error, unexpected T_VARIABLE in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 229
+[16-Jan-2012 03:03:47] PHP Parse error:  syntax error, unexpected ':' in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 81
+[16-Jan-2012 03:07:44] PHP Fatal error:  Call to undefined function alert() in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 82
+[16-Jan-2012 03:13:54] PHP Warning:  implode() [<a href='function.implode'>function.implode</a>]: Invalid arguments passed in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 150
+[16-Jan-2012 03:56:55] PHP Parse error:  syntax error, unexpected T_CONSTANT_ENCAPSED_STRING in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 55
+[16-Jan-2012 05:46:08] PHP Warning:  end() expects parameter 1 to be array, null given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 247
+[16-Jan-2012 05:55:46] PHP Warning:  end() expects parameter 1 to be array, null given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxupload.php on line 251
+[18-Jan-2012 03:26:42] PHP Parse error:  syntax error, unexpected T_STRING in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 254
+[18-Jan-2012 03:28:09] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, string given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 73
+[18-Jan-2012 03:28:09] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 279
+[18-Jan-2012 03:30:48] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, string given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 73
+[18-Jan-2012 03:30:48] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 279
+[18-Jan-2012 03:33:36] PHP Warning:  mysql_num_rows() expects parameter 1 to be resource, string given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 73
+[18-Jan-2012 03:33:36] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 279
+[18-Jan-2012 03:52:01] PHP Warning:  mysql_fetch_array() expects parameter 1 to be resource, boolean given in /home/kiddohub/spencer/js/image_upload/scripts/ajaxuploadsm.php on line 275
