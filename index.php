@@ -28,6 +28,7 @@ if(!$user->exists()) {
 // GET SITE DATA
 $sitedata = DB::getInstance();
 $sitedata->query('SELECT * FROM site_data');
+
 if(!$sitedata->count()) {
     echo 'error';
 } else {

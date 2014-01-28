@@ -2,16 +2,21 @@
 class DB {
 	public static $instance = null;
 
-	private 	$_pdo = null,
+	private 	$_mysqli = null,
 				$_query = null,
 				$_error = false,
 				$_results = null,
 				$_count = 0;
 
 	private function __construct() {
-		try {
-			$this->_pdo = new PDO('mysql:host=' . Config::get('mysql/host') . ';dbname=' . Config::get('mysql/db'), Config::get('mysql/username'), Config::get('mysql/password'));
-		} catch(PDOExeption $e) {
+        define("MYSQL_CONN_ERROR", "Unable to connect to database.");
+
+        // Ensure reporting is setup correctly
+        mysqli_report(MYSQLI_REPORT_STRICT);
+
+        try {
+			$this->_mysqli = new mysqli(Config::get('mysql/host'), Config::get('mysql/username'), Config::get('mysql/password'), Config::get('mysql/db'));
+		} catch(mysqli_sql_exception $e) {
 			die($e->getMessage());
 		}
 	}
@@ -28,23 +33,26 @@ class DB {
 
 		$this->_error = false;
 
-		if($this->_query = $this->_pdo->prepare($sql)) {
+		if($this->_query = $this->_mysqli->prepare($sql)) {
 			$x = 1;
 			if(count($params)) {
 				foreach($params as $param) {
-					$this->_query->bindValue($x, $param);
+                    $this->_query->bind_param($x, $param);
 					$x++;
 				}
 			}
 
 			if($this->_query->execute()) {
-				$this->_results = $this->_query->fetchAll(PDO::FETCH_OBJ);
-				$this->_count = $this->_query->rowCount();
+                $results = $this->_query->get_result();
+                $this->_results = array();
+                while ($result = $results->fetch_object()) {
+                    $this->_results[] = $result;
+                }
+				$this->_count = $results->num_rows;
 			} else {
 				$this->_error = true;
 			}
 		}
-		
 		return $this;
 	}
 
@@ -65,14 +73,14 @@ class DB {
 			$value 		= $where[2];
 
 			if(in_array($operator, $operators)) {
-				$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
+				$sql = "{$action} FROM {$table} WHERE {$field} {$operator} {$value}";
 
 				if(!$this->query($sql, array($value))->error()) {
 					return $this;
 				}
 
 			}
-			
+
 			return false;
 		}
 	}
