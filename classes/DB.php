@@ -34,20 +34,42 @@ class DB {
 		$this->_error = false;
 
 		if($this->_query = $this->_mysqli->prepare($sql)) {
-			$x = 1;
 			if(count($params)) {
-				foreach($params as $param) {
-                    $this->_query->bind_param($x, $param);
-					$x++;
-				}
+                $type = '';                        //initial sting with types
+                foreach ($params as $param) {        //for each element, determine type and add
+                    if (is_int($param)) {
+                        $type .= 'i';              //integer
+                    } elseif (is_float($param)) {
+                        $type .= 'd';              //double
+                    } elseif (is_string($param)) {
+                        $type .= 's';              //string
+                    } else {
+                        $type .= 'b';              //blob and unknown
+                    }
+                }
+
+                //  BUILD THE TYPE ARRAY
+                $bind_names = array();
+                $bind_names[] = $type;
+
+                for ($i=0; $i < count($params); $i++) {    //go through incoming params and added them to array
+                    $bind_name = 'bind' . $i;       //give them an arbitrary name
+                    $$bind_name = $params[$i];      //add the parameter to the variable variable
+                    $bind_names[] = &$$bind_name;   //now associate the variable as an element in an array
+                }
+
+                // BIND THE DYNAMIC PARAMS
+                call_user_func_array(array($this->_query,'bind_param'),$bind_names);
 			}
 
 			if($this->_query->execute()) {
                 $results = $this->_query->get_result();
+
                 $this->_results = array();
                 while ($result = $results->fetch_object()) {
                     $this->_results[] = $result;
                 }
+
 				$this->_count = $results->num_rows;
 			} else {
 				$this->_error = true;
@@ -73,9 +95,9 @@ class DB {
 			$value 		= $where[2];
 
 			if(in_array($operator, $operators)) {
-				$sql = "{$action} FROM {$table} WHERE {$field} {$operator} {$value}";
+				$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
 
-				if(!$this->query($sql, array($value))->error()) {
+				if($action !== 'DELETE' && !$this->query($sql, array($value))->error()) {
 					return $this;
 				}
 
