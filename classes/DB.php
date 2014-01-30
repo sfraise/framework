@@ -35,44 +35,52 @@ class DB {
 
 		if($this->_query = $this->_mysqli->prepare($sql)) {
 			if(count($params)) {
-                $type = '';                        //initial sting with types
-                foreach ($params as $param) {        //for each element, determine type and add
-                    if (is_int($param)) {
+                $type = '';                        //initial string with types
+                $values = array();
+                foreach ($params as $key => $value) {        //for each element, determine type and add
+                    if (is_int($value)) {
                         $type .= 'i';              //integer
-                    } elseif (is_float($param)) {
+                    } elseif (is_float($value)) {
                         $type .= 'd';              //double
-                    } elseif (is_string($param)) {
+                    } elseif (is_string($value)) {
                         $type .= 's';              //string
                     } else {
                         $type .= 'b';              //blob and unknown
                     }
+
+                    $values[] = $value;
                 }
 
                 //  BUILD THE TYPE ARRAY
                 $bind_names = array();
                 $bind_names[] = $type;
 
-                for ($i=0; $i < count($params); $i++) {    //go through incoming params and added them to array
+                for ($i=0; $i<count($values);$i++) {    //go through incoming params and add them to array
                     $bind_name = 'bind' . $i;       //give them an arbitrary name
-                    $$bind_name = $params[$i];      //add the parameter to the variable variable
+                    if(isset($values[$i])) {
+                        $$bind_name = $values[$i];      //add the parameter to the variable variable
+                    }
                     $bind_names[] = &$$bind_name;   //now associate the variable as an element in an array
                 }
 
-                // BIND THE DYNAMIC PARAMS
+                // BIND THE DYNAMIC PARAMS AND TYPES
                 call_user_func_array(array($this->_query,'bind_param'),$bind_names);
 			}
 
 			if($this->_query->execute()) {
                 $results = $this->_query->get_result();
 
+                if($results) {
                 $this->_results = array();
                 while ($result = $results->fetch_object()) {
                     $this->_results[] = $result;
                 }
 
 				$this->_count = $results->num_rows;
+                }
 			} else {
 				$this->_error = true;
+                printf($this->_mysqli->error);
 			}
 		}
 		return $this;
@@ -97,7 +105,7 @@ class DB {
 			if(in_array($operator, $operators)) {
 				$sql = "{$action} FROM {$table} WHERE {$field} {$operator} ?";
 
-				if($action !== 'DELETE' && !$this->query($sql, array($value))->error()) {
+				if(!$this->query($sql, array($value))->error()) {
 					return $this;
 				}
 
