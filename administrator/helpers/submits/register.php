@@ -105,13 +105,13 @@ if (Token::check($token)) {
                 $salt = $userdata->salt;
                 $datetime = date('Y-m-d H:i:s');
 
-                // CREATE THE RESET CODE
+                // CREATE THE VERIFICATION CODE
                 $code = Hash::make(rand(100, 900), $salt);
 
                 // ADD CODE AND CURRENT TIMESTAMP TO USER'S DATABASE TABLE
                 try {
                     $user->update(array(
-                        'activation_code' => $code
+                        'verification_code' => $code
                     ), $id);
                 } catch (Exception $e) {
                     die($e->getMessage());

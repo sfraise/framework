@@ -38,7 +38,7 @@ if (Token::check($token)) {
             }
             $sitelogo = "<img id=\"site_logo\" src=\"" . $logo . "\" alt=\"" . $sitename . "\" title=\"" . $sitename . "\" />";
             $verify = $siteinfo->verify;
-            if($verify == 0) {
+            if ($verify == 0) {
                 $active = 1;
             } else {
                 $active = 0;
@@ -67,58 +67,36 @@ if (Token::check($token)) {
             'user_group' => 1
         ));
 
-        // IF EMAIL VERIFICATION DISABLED
-        if ($verify == 0) {
-            // AUTO-LOGIN
-            $rememberme = 'on';
-            $remember = ($rememberme === 'on') ? true : false;
-            $login = $user->login($email, $password, $remember);
+        // GET NEW USER DATA
+        $newuser = new User($email);
+        $userdata = $newuser->data();
+        $id = $userdata->id;
+        $firstname = $userdata->firstname;
+        $lastname = $userdata->lastname;
+        $salt = $userdata->salt;
+        $datetime = date('Y-m-d H:i:s');
 
-            if ($login) {
-                ?>
-                <script type="text/javascript">
-                    parent.location.reload();
-                </script>
-            <?php
-            } else {
-                echo '<p>There was a problem logging in.</p>';
-                ?>
-                <script type="text/javascript">
-                    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-                    $('#token').val('<?php echo Token::generate(); ?>');
-                </script>
-            <?php
-            }
-        // IF EMAIL VERIFICATION ENABLED
-        } else {
-            $newuser = new User($email);
+        if ($verify == 0) {
+            /*** IF EMAIL VERIFICATION ENABLED ***/
             // SEND ACTIVATION LINK IN AN EMAIL
             if (!$newuser->exists()) {
                 // IF EMAIL DOESN'T EXIST
                 echo "Email doesn't exist";
             } else {
-                // IF EMAIL DOES EXIST GET NEW USER DATA
-                $userdata = $newuser->data();
-                $id = $userdata->id;
-                $firstname = $userdata->firstname;
-                $lastname = $userdata->lastname;
-                $salt = $userdata->salt;
-                $datetime = date('Y-m-d H:i:s');
-
-                // CREATE THE RESET CODE
+                // CREATE THE VERIFICATION CODE
                 $code = Hash::make(rand(100, 900), $salt);
 
-                // ADD CODE AND CURRENT TIMESTAMP TO USER'S DATABASE TABLE
+                // ADD VERIFICATION CODE TO USER'S DATABASE TABLE
                 try {
                     $user->update(array(
-                        'activation_code' => $code
+                        'verification_code' => $code
                     ), $id);
                 } catch (Exception $e) {
                     die($e->getMessage());
                 }
 
                 // CREATE THE RESET PASSWORD LINK
-                $activationlink = '<a href="http://www.mysite.com/index.php?option=activate&amp;email='.$email.'&amp;token='.$code.'">Activate Your Account</a>';
+                $activationlink = '<a href="http://www.mysite.com/index.php?option=activate&amp;email=' . $email . '&amp;token=' . $code . '">Activate Your Account</a>';
 
                 // SET THE RECIPIENT EMAIL AND SUBJECT
                 define("RECIPIENT_EMAIL", $email);
@@ -130,17 +108,17 @@ if (Token::check($token)) {
                 $senderEmail = 'contact@codemonkeys.com';
 
                 // SET THE MESSAGE
-                if(!$verify_email) {
+                if (!$verify_email) {
                     $verify_email = "
-                                ".$firstname." ".$lastname.",<br /><br />
-                                Thank you for joining ".$sitename."!<br /><br />
+                                " . $firstname . " " . $lastname . ",<br /><br />
+                                Thank you for joining " . $sitename . "!<br /><br />
                                 Please click the link below to activate your account:<br />
                                 [activationlink]
                                 ";
                 }
                 $message = "
-                            ".$verify_email."<br />
-                            ".$activationlink."
+                            " . $verify_email . "<br />
+                            " . $activationlink . "
                             ";
 
 
@@ -155,7 +133,8 @@ if (Token::check($token)) {
                 if ($success) {
                     ?>
                     <div class="registration_success_message">
-                        Thank you for registering with <?php echo $sitename; ?>!<br />An email has been sent to <?php echo $email; ?> to activate your account
+                        Thank you for registering with <?php echo $sitename; ?>!<br/>An email has been sent
+                        to <?php echo $email; ?> to activate your account
                     </div>
                 <?php } else { ?>
                     <div class="registration_success_error">
@@ -163,6 +142,39 @@ if (Token::check($token)) {
                     </div>
                 <?php
                 }
+            }
+        } else {
+            /*** IF EMAIL VERIFICATION DISABLED ***/
+            // SET USER'S VERIFICATION CODE TO NULL AND ADD VERIFICATION DATE
+            try {
+                $user->update(array(
+                    'verification_code' => null,
+                    'verification_date' => $date
+                ), $id);
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+
+            // AUTO-LOGIN
+            $rememberme = 'on';
+            $remember = ($rememberme === 'on') ? true : false;
+            $login = $user->login($email, $password, $remember);
+
+            if ($login) {
+                ?>
+                <script type="text/javascript">
+                    // REFRESH THE PARENT PAGE
+                    parent.location.reload();
+                </script>
+            <?php
+            } else {
+                echo '<p>There was a problem logging in.</p>';
+                ?>
+                <script type="text/javascript">
+                    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
+                    $('#token').val('<?php echo Token::generate(); ?>');
+                </script>
+            <?php
             }
         }
     } catch (Exception $e) {

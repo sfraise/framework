@@ -7,16 +7,17 @@
  */
 
 // GET VALUES
-$email = escape($_GET['email']);
-$token = escape($_GET['token']);
+$email = Input::get('email');
+$token = Input::get('token');
 
 $newuser = new User($email);
 $newuserdata = $newuser->data();
 $id = $newuserdata->id;
 $salt = $newuserdata->salt;
 $emailtoken = Hash::make($token, $salt);
-$code = $newuserdata->activation_code;
+$code = $newuserdata->verification_code;
 $activationcode = Hash::make($code, $salt);
+$datetime = date('Y-m-d H:i:s');
 
 if ($code == 'active') {
     echo 'Your account is already active';
@@ -30,7 +31,8 @@ if ($code == 'active') {
         try {
             $newuser->update(array(
                 'active' => 1,
-                'activation_code' => 'active'
+                'verification_code' => null,
+                'verification_date' => $datetime
             ), $id);
             ?>
             <div class="message">
