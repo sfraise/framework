@@ -33,7 +33,7 @@ class User {
 	public function find($user = null) {
 		// Check if user_id specified and grab details
 		if($user) {
-			$field = (is_numeric($user)) ? 'id' : 'username';
+			$field = (is_numeric($user)) ? 'id' : 'email';
 			$data = $this->_db->get('users', array($field, '=', $user));
 
 			if($data->count()) {
@@ -54,21 +54,21 @@ class User {
 		if(!$id && $this->isLoggedIn()) {
 			$id = $this->data()->id;
 		}
-		
+
 		if(!$this->_db->update('users', $id, $fields)) {
 			throw new Exception('There was a problem updating.');
 		}
 	}
 
-	public function login($username = null, $password = null, $remember = false) {
+	public function login($email = null, $password = null, $remember = false) {
 
-		if(!$username && !$password && $this->exists()) {
+		if(!$email && !$password && $this->exists()) {
 			Session::put($this->_sessionName, $this->data()->id);
 		} else {
-			$user = $this->find($username);
+			$user = $this->find($email);
 
 			if($user) {
-				if($this->data()->password === Hash::make($password, $this->data()->salt)) {
+				if($this->data()->current_password === Hash::make($password, $this->data()->salt)) {
 					Session::put($this->_sessionName, $this->data()->id);
 
 					if($remember) {
@@ -158,7 +158,7 @@ class User {
             $field_input = 'Please enter the type method';
         }
 
-        if($field == 'password' || $field == 'salt' || $field == 'joined' || $field == 'user_group') {
+        if($field == 'current_password' || $field == 'salt' || $field == 'regdatetime' || $field == 'user_group') {
             $field_display = 'This field is private';
         } else {
             $field_display = "

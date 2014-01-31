@@ -1,9 +1,9 @@
 <script type="text/javascript" src="/js/image_upload/scripts/ajaxupload.js"></script>
 <?php
-if (!$username = Input::get('user')) {
+if (!$email = Input::get('user')) {
     Redirect::to('index.php');
 } else {
-    $user = new User($username);
+    $user = new User($email);
 
     if (!$user->exists()) {
         Redirect::to(404);
@@ -15,7 +15,7 @@ if (!$username = Input::get('user')) {
     $userid = $data->id;
 
     // FORMAT THE MEMBER SINCE DATE
-    $membersince = date('F jS, Y', strtotime($data->joined));
+    $membersince = date('F jS, Y', strtotime($data->regdatetime));
 
     // GET THE USER'S IMAGE PATH
     $userimage = $data->image;
@@ -25,7 +25,7 @@ if (!$username = Input::get('user')) {
     ?>
 
     <div class="userprofile">
-        <h3><?php echo escape($data->username); ?></h3>
+        <h3><?php echo escape($data->email); ?></h3>
 
         <div>Member since: <?php echo $membersince; ?></div>
 

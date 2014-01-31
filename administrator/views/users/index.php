@@ -16,11 +16,11 @@ if (!$usersdata->count()) {
     $i = 1;
     foreach ($usersdata->results() as $user) {
         $thisuserid = $user->id;
-        $thisuseremail = $user->username;
+        $thisuseremail = $user->email;
         $thisuserfirstname = $user->firstname;
         $thisuserlastname = $user->lastname;
         $thisusergroup = $user->user_group;
-        $thisuserregdate = date('m-d-Y', strtotime($user->joined));
+        $thisuserregdate = date('m-d-Y', strtotime($user->regdatetime));
 
         if ($thisusergroup == 2) {
             $thisusertype = 'Super Administrator';

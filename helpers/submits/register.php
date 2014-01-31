@@ -1,4 +1,3 @@
-<script type="text/javascript" src="/js/main.js"></script>
 <?php
 /**
  * Created by PhpStorm.
@@ -58,13 +57,13 @@ if (Token::check($token)) {
 
     try {
         $user->create(array(
-            'username' => $email,
-            'password' => $hashpass,
+            'email' => $email,
+            'current_password' => $hashpass,
             'salt' => $salt,
             'firstname' => $firstname,
             'lastname' => $lastname,
-            'joined' => $date,
-            'active' => $active,
+            'regdatetime' => $date,
+            'account_status' => $active,
             'user_group' => 1
         ));
 

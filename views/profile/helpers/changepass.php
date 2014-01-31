@@ -19,11 +19,14 @@ $newpass = escape($_POST['newpass']);
 if (Token::check($token)) {
     $salt = Hash::salt(32);
     $hashpass = Hash::make($newpass, $salt);
+    $user = new User();
 
     // UPDATE THE DATABASE
     try {
-        $userdata = DB::getInstance();
-        $userdata->query("UPDATE users SET password = '$hashpass', salt = '$salt' WHERE id = $userid");
+        $user->update(array(
+            'current_password' => $hashpass,
+            'salt' => $salt
+        ));
 
         echo 'The password has been updated';
     } catch (Exception $e) {

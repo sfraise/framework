@@ -15,7 +15,7 @@ class DB {
         mysqli_report(MYSQLI_REPORT_STRICT);
 
         try {
-			$this->_mysqli = new mysqli(Config::get('mysql/host'), Config::get('mysql/username'), Config::get('mysql/password'), Config::get('mysql/db'));
+			$this->_mysqli = new mysqli(Config::get('mysql/host'), Config::get('mysql/email'), Config::get('mysql/password'), Config::get('mysql/db'));
 		} catch(mysqli_sql_exception $e) {
 			die($e->getMessage());
 		}
@@ -35,20 +35,20 @@ class DB {
 
 		if($this->_query = $this->_mysqli->prepare($sql)) {
 			if(count($params)) {
-                $type = '';                        //initial string with types
+                $type = '';                             //initial string with types
                 $values = array();
-                foreach ($params as $key => $value) {        //for each element, determine type and add
+                foreach ($params as $key => $value) {   //for each element, determine type and add
                     if (is_int($value)) {
-                        $type .= 'i';              //integer
+                        $type .= 'i';                   //integer
                     } elseif (is_float($value)) {
-                        $type .= 'd';              //double
+                        $type .= 'd';                   //double
                     } elseif (is_string($value)) {
-                        $type .= 's';              //string
+                        $type .= 's';                   //string
                     } else {
-                        $type .= 'b';              //blob and unknown
+                        $type .= 'b';                   //blob and unknown
                     }
 
-                    $values[] = $value;
+                    $values[] = $value;                 //set the param value array
                 }
 
                 //  BUILD THE TYPE ARRAY
@@ -56,11 +56,11 @@ class DB {
                 $bind_names[] = $type;
 
                 for ($i=0; $i<count($values);$i++) {    //go through incoming params and add them to array
-                    $bind_name = 'bind' . $i;       //give them an arbitrary name
+                    $bind_name = 'bind' . $i;           //give them an arbitrary name
                     if(isset($values[$i])) {
                         $$bind_name = $values[$i];      //add the parameter to the variable variable
                     }
-                    $bind_names[] = &$$bind_name;   //now associate the variable as an element in an array
+                    $bind_names[] = &$$bind_name;       //now associate the variable as an element in an array
                 }
 
                 // BIND THE DYNAMIC PARAMS AND TYPES

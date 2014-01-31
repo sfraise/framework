@@ -1,4 +1,3 @@
-<script type="text/javascript" src="/js/main.js"></script>
 <?php
 /**
  * Created by PhpStorm.
@@ -22,10 +21,10 @@ if (Token::check($token)) {
     $user = new User($email);
     $userdata = $user->data();
     $userid = $userdata->id;
-    $active = $userdata->active;
+    $active = $userdata->account_status;
 
     if (!$userid) {
-        echo '<div class="loginerror">Sorry, that username and password wasn\'t recognised.</div>';
+        echo '<div class="loginerror">Sorry, that email and password wasn\'t recognised.</div>';
     } else {
         if ($active == 1) {
             $remember = ($rememberme === 'on') ? true : false;
@@ -38,7 +37,7 @@ if (Token::check($token)) {
                 </script>
             <?php
             } else {
-                echo '<div class="loginerror">Sorry, that username and password wasn\'t recognised.</div>';
+                echo '<div class="loginerror">Sorry, that email and password wasn\'t recognised.</div>';
                 ?>
                 <script type="text/javascript">
                     // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
