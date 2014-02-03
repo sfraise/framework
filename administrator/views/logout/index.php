@@ -1,6 +1,6 @@
 <?php
 // LOGOUT
-$user = new User();
+$user = new userAccess();
 $user->logout();
 ?>
 

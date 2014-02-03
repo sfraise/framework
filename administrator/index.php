@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/14/14
  * Time: 3:11 PM
  */
@@ -10,7 +10,7 @@
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET USER DATA
-$user = new User();
+$user = new userAccess();
 if(!$user->exists()) {
     $usertype = 'Guest';
 } else {

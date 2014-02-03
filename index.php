@@ -3,7 +3,7 @@
 include_once 'core/init.php';
 
 // GET USER DATA
-$user = new User();
+$user = new userAccess();
 
 if(Session::exists('home')) {
     echo '<p>', Session::flash('home'), '</p>';

@@ -4,7 +4,7 @@ $email = escape($_GET['email']);
 $token = escape($_GET['token']);
 
 if (Token::check(Token::generate())) {
-    $user = new User($email);
+    $user = new userAccess($email);
     $userdata = $user->data();
     $userid = $userdata->id;
     $salt = $userdata->salt;

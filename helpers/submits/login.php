@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/13/14
  * Time: 8:13 PM
  */
@@ -18,7 +18,7 @@ $rememberme = escape($_POST['login_remember']);
 
 // LOGIN
 if (Token::check($token)) {
-    $user = new User($email);
+    $user = new userAccess($email);
     $userdata = $user->data();
     $userid = $userdata->id;
     $active = $userdata->account_status;

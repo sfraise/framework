@@ -34,7 +34,7 @@ if(Cookie::exists(Config::get('remember/cookie_name'))) {
 	$hashCheck = DB::getInstance()->get('users_session', array('hash', '=', $hash));
 
 	if($hashCheck->count()) {
-		$user = new User($hashCheck->first()->user_id);
+		$user = new userAccess($hashCheck->first()->user_id);
 		$user->login();
 	}
 

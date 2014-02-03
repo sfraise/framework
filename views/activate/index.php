@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/27/14
  * Time: 2:33 PM
  */
@@ -10,7 +10,7 @@
 $email = Input::get('email');
 $token = Input::get('token');
 
-$newuser = new User($email);
+$newuser = new userAccess($email);
 $newuserdata = $newuser->data();
 $id = $newuserdata->id;
 $salt = $newuserdata->salt;

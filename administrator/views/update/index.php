@@ -1,6 +1,6 @@
 <?php
 
-$user = new User();
+$user = new userAccess();
 
 if(!$user->isLoggedIn()) {
 	Redirect::to('index.php');

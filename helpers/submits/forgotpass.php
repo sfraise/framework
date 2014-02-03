@@ -2,7 +2,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/14/14
  * Time: 5:40 PM
  */
@@ -15,7 +15,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 $token = escape($_POST['forgotpass_token']);
 $email = escape($_POST['forgotpass_email']);
 
-$user = new User($email);
+$user = new userAccess($email);
 
 if (!$user->exists()) {
     // IF EMAIL DOESN'T EXIST

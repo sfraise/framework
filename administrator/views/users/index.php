@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/15/14
  * Time: 8:51 PM
  */
@@ -9,7 +9,7 @@
 // GET USERS DATA
 $members = array();
 $usersdata = DB::getInstance();
-$usersdata->query('SELECT * FROM users');
+$usersdata->query('SELECT * FROM user_access LEFT JOIN user_details ON user_details.user_id = user_access.id');
 if (!$usersdata->count()) {
     echo 'No Users Exist';
 } else {
@@ -17,8 +17,8 @@ if (!$usersdata->count()) {
     foreach ($usersdata->results() as $user) {
         $thisuserid = $user->id;
         $thisuseremail = $user->email;
-        $thisuserfirstname = $user->firstname;
-        $thisuserlastname = $user->lastname;
+        $thisuserfirstname = $user->first_name;
+        $thisuserlastname = $user->last_name;
         $thisusergroup = $user->user_group;
         $thisuserregdate = date('m-d-Y', strtotime($user->regdatetime));
 

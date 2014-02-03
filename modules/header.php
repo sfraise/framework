@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/25/14
  * Time: 5:06 PM
  */
@@ -18,10 +18,14 @@
     $logout = $newRegister->get_logreg('logout');
     $changepassword = $newRegister->get_logreg('changepassword');
     $forgotpassword = $newRegister->get_logreg('forgotpassword');
+
+    $myData = new userDetails();
+    $mydata = $myData->data();
+    $myfirstname = $mydata->first_name;
     ?>
     <?php if ($user->isLoggedIn()) { ?>
         <div class="loginmessage">
-            Hello <a href="index.php?option=profile&user=<?php echo escape($user->data()->id); ?>"><?php echo escape($user->data()->firstname); ?></a>! - <?php echo $usertype; ?>
+            Hello <a href="index.php?option=profile&user=<?php echo $user->data()->id; ?>"><?php echo $myfirstname; ?></a>! - <?php echo $usertype; ?>
         </div>
         <div class="loginlinks">
             <?php echo $logout; ?> <a href="index.php?option=profile&user=<?php echo $myid; ?>">My Profile</a> <?php if($user->hasPermission('admin')) { ?><a href="/administrator/index.php">Admin Panel</a><?php } ?>

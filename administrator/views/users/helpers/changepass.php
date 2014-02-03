@@ -3,7 +3,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/25/14
  * Time: 7:38 PM
  */
@@ -20,7 +20,7 @@ $newpass = escape($_POST['newpass']);
 if (Token::check($token)) {
     $salt = Hash::salt(32);
     $hashpass = Hash::make($newpass, $salt);
-    $user = new User($userid);
+    $user = new userAccess($userid);
 
     // UPDATE THE DATABASE
     try {

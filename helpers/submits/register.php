@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/13/14
  * Time: 5:49 PM
  */
@@ -49,7 +49,7 @@ if (Token::check($token)) {
         }
     }
 
-    $user = new User();
+    $user = new userAccess();
 
     $salt = Hash::salt(32);
     $hashpass = Hash::make($password, $salt);
@@ -68,7 +68,7 @@ if (Token::check($token)) {
         ));
 
         // GET NEW USER DATA
-        $newuser = new User($email);
+        $newuser = new userAccess($email);
         $userdata = $newuser->data();
         $id = $userdata->id;
         $firstname = $userdata->firstname;

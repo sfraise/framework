@@ -191,7 +191,7 @@ if (Token::check($token)) {
     }
 
     if ($imgUploaded) {
-        $user = new User($myid);
+        $user = new userDetails($myid);
         $userdata = $user->data();
         $oldimage = $userdata->image;
         if($oldimage) {

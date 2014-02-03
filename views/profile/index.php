@@ -3,7 +3,7 @@
 if (!$email = Input::get('user')) {
     Redirect::to('index.php');
 } else {
-    $user = new User($email);
+    $user = new userDetails($email);
 
     if (!$user->exists()) {
         Redirect::to(404);
@@ -84,8 +84,8 @@ if (!$email = Input::get('user')) {
                 <div class="profile_field_wrapper_title">
                     First Name:
                 </div>
-                <div id="profile_field_wrapper_firstname">
-                    <?php echo $user->userFields($myid, 'firstname', 'text'); ?>
+                <div id="profile_field_wrapper_first_name">
+                    <?php echo $user->userFields($myid, 'first_name', 'text'); ?>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -93,8 +93,8 @@ if (!$email = Input::get('user')) {
                 <div class="profile_field_wrapper_title">
                     Last Name:
                 </div>
-                <div id="profile_field_wrapper_lastname">
-                    <?php echo $user->userFields($myid, 'lastname', 'text'); ?>
+                <div id="profile_field_wrapper_last_name">
+                    <?php echo $user->userFields($myid, 'last_name', 'text'); ?>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -139,7 +139,7 @@ if (!$email = Input::get('user')) {
                     Date of Birth:
                 </div>
                 <div id="profile_field_wrapper_dob">
-                    <?php echo $user->userFields($myid, 'dob', 'text'); ?>
+                    <?php echo $user->userFields($myid, 'birth', 'text'); ?>
                 </div>
                 <div style="clear:both;"></div>
             </div>

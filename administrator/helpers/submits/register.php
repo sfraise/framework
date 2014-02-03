@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/13/14
  * Time: 5:49 PM
  */
@@ -49,7 +49,7 @@ if (Token::check($token)) {
         }
     }
 
-    $user = new User();
+    $user = new userAccess();
 
     $salt = Hash::salt(32);
     $hashpass = Hash::make($password, $salt);
@@ -91,7 +91,7 @@ if (Token::check($token)) {
             }
             // IF EMAIL VERIFICATION ENABLED
         } else {
-            $newuser = new User($email);
+            $newuser = new userAccess($email);
             // SEND ACTIVATION LINK IN AN EMAIL
             if (!$newuser->exists()) {
                 // IF EMAIL DOESN'T EXIST

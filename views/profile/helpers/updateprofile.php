@@ -2,7 +2,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Spencer
+ * userAccess: Spencer
  * Date: 1/20/14
  * Time: 8:02 PM
  */
@@ -18,7 +18,7 @@ $field = escape($_POST['field']);
 $newvalue = escape($_POST['newvalue']);
 
 if (Token::check($token)) {
-    $user = new User($myid);
+    $user = new userDetails($myid);
 
     try {
         $user->update(array(
@@ -29,7 +29,7 @@ if (Token::check($token)) {
     }
 }
 
-$user = new User($myid);
+$user = new userDetails($myid);
 
 echo $user->userFields($myid, $field, 'text');
 ?>
