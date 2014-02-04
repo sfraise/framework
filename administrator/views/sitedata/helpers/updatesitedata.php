@@ -12,9 +12,9 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['editsitetoken']);
-$name = escape($_POST['editsitename']);
-$description = escape($_POST['editsitedesc']);
+$token = Input::get('editsitetoken');
+$name = Input::get('editsitename');
+$description = Input::get('editsitedesc');
 
 // GET SITE DATA
 $sitedata = DB::getInstance();

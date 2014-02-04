@@ -30,7 +30,7 @@
         <!-- IF USER IS LOGGED IN -->
         <?php if ($user->isLoggedIn()) { ?>
             <!-- IF USER IS AT LEAST A MOD USER TYPE -->
-            <?php if($user->hasPermission('mod')) { ?>
+            <?php if($user->hasPermission('sales')) { ?>
                 <!-- TOP MENU (administrator/modules/topmenu.php) -->
                 <div class="admintopmenu">
                     <?php require_once 'modules/topmenu.php'; ?>

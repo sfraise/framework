@@ -28,7 +28,7 @@
             Hello <a href="index.php?option=profile&user=<?php echo $user->data()->id; ?>"><?php echo $myfirstname; ?></a>! - <?php echo $usertype; ?>
         </div>
         <div class="loginlinks">
-            <?php echo $logout; ?> <a href="index.php?option=profile&user=<?php echo $myid; ?>">My Profile</a> <?php if($user->hasPermission('admin')) { ?><a href="/administrator/index.php">Admin Panel</a><?php } ?>
+            <?php echo $logout; ?> <a href="index.php?option=profile&user=<?php echo $myid; ?>">My Profile</a> <?php if($user->hasPermission('sales')) { ?><a href="/administrator/index.php">Admin Panel</a><?php } ?>
         </div>
     <?php } else { ?>
         <div class="loginlinks">

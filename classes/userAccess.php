@@ -68,6 +68,29 @@ class userAccess {
 			$user = $this->find($email);
 
 			if($user) {
+                // GET USER'S REGISTRATION AND PASSWORD RESET DATETIMES
+                $userregdate = $this->data()->regdatetime;
+                $passresettime = $this->data()->reset_time;
+                if($passresettime) {
+                    $passworddate = $passresettime;
+                } else {
+                    $passworddate = $userregdate;
+                }
+
+                // GET SALT EXTENSIONS BASED ON REGISTRATION DATE OR PASSWORD RESET TIME
+                $saltdata = DB::getInstance();
+                try {
+                    $saltdata->query("SELECT * FROM salts WHERE from_datetime <= '$passworddate' AND (to_datetime >= '$passworddate' OR to_datetime IS NULL)");
+                    if ($saltdata->count()) {
+                        $saltresult = $saltdata->first();
+                        $prefix = $saltresult->prefix;
+                        $suffix = $saltresult->suffix;
+                        $password = $prefix . $password . $suffix;
+                    }
+                } catch (Exception $e) {
+                    die($e->getMessage());
+                }
+
 				if($this->data()->current_password === Hash::make($password, $this->data()->salt)) {
 					Session::put($this->_sessionName, $this->data()->id);
 
@@ -96,7 +119,7 @@ class userAccess {
 	}
 
 	public function hasPermission($key) {
-		$group = $this->_db->query("SELECT * FROM groups WHERE id = ?", array($this->data()->user_group));
+		$group = $this->_db->query("SELECT * FROM groups WHERE id = ?", array($this->data()->group));
 		
 		if($group->count()) {
 			$permissions = json_decode($group->first()->permissions, true);

@@ -7,15 +7,15 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['token']);
-$userid = escape($_POST['userid']);
-$type = escape($_POST['type']);
+$token = Input::get('token');
+$userid = Input::get('userid');
+$type = Input::get('type');
 
 if(Token::check($token)) {
     $userdata = DB::getInstance();
     // UPDATE THE DATABASE
     try {
-        $userdata->query("UPDATE users SET user_group = '$type' WHERE id = $userid");
+        $userdata->query("UPDATE users SET group = '$type' WHERE id = $userid");
 
         if ($type == 2) {
             $thisusertype = 'Super Administrator';

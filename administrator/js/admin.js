@@ -118,6 +118,29 @@ $(document).ready(function () {
         return false;
     });
 
+    // UPDATE SALT PREFIX
+    $('#admin_salt_ext_submit').click(function() {
+        var token = $('#token').val();
+        var prefix = $('#admin_salt_prefix_input').val();
+        var suffix = $('#admin_salt_suffix_input').val();
+
+        $('#admin_salt_ext_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
+        $.ajax({
+            url: '/administrator/views/config/helpers/saltext.php',
+            type: 'POST',
+            data: {token: token, prefix: prefix, suffix: suffix},
+            success: function (data) {
+                $('#admin_salt_ext_message').html(data);
+                $('#admin_salt_prefix_input').val('');
+                $('#admin_salt_suffix_input').val('');
+            },
+            error: function (errorThrown) {
+                $('#admin_salt_ext_message').html(errorThrown);
+            }
+        });
+        return false;
+    });
+
     /*** SITE INFO SECTION ***/
     // LOGO UPLOAD TOGGLE
     $('#update_logo_upload_area').click(function () {

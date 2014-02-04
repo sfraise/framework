@@ -24,6 +24,12 @@ class userDetails extends userAccess {
         }
     }
 
+    public function create($fields = array()) {
+        if(!$this->_db->insert('user_details', $fields)) {
+            throw new Exception('There was a problem creating an account.');
+        }
+    }
+
     // USER PROFILE FIELDS
     /*
      * $myid = the viewer's id
@@ -58,7 +64,7 @@ class userDetails extends userAccess {
             $field_input = 'Please enter the type method';
         }
 
-        if($field == 'current_password' || $field == 'salt' || $field == 'regdatetime' || $field == 'user_group') {
+        if($field == 'current_password' || $field == 'salt' || $field == 'regdatetime' || $field == 'group') {
             $field_display = 'This field is private';
         } else {
             $field_display = "

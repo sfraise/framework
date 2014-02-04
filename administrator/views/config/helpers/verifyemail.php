@@ -11,8 +11,8 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['token']);
-$email = escape($_POST['email']);
+$token = Input::get('token');
+$email = Input::get('email');
 
 // MAKE SURE THE PAGE TOKEN IS VALID
 if (Token::check($token)) {

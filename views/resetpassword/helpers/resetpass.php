@@ -12,9 +12,9 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$userid = escape($_POST['userid']);
-$token = escape($_POST['token']);
-$newpass = escape($_POST['newpass']);
+$userid = Input::get('userid');
+$token = Input::get('token');
+$newpass = Input::get('newpass');
 
 // MAKE SURE THE PAGE TOKEN IS VALID
 if (Token::check($token)) {

@@ -14,14 +14,14 @@ $user = new userAccess();
 if(!$user->exists()) {
     $usertype = 'Guest';
 } else {
-    if($user->hasPermission('superadmin')) {
-        $usertype = 'Super Administrator';
-    } elseif($user->hasPermission('admin')) {
-        $usertype = 'Administrator';
-    } elseif($user->hasPermission('mod')) {
-        $usertype = 'Moderator';
+    if($user->hasPermission('manager')) {
+        $usertype = 'Manager';
+    } elseif($user->hasPermission('sales')) {
+        $usertype = 'Sales';
+    } elseif($user->hasPermission('type2')) {
+        $usertype = 'Type 2';
     } else {
-        $usertype = 'Registered';
+        $usertype = 'Type 1';
     }
     $myuserdata = $user->data();
     $myid = $myuserdata->id;

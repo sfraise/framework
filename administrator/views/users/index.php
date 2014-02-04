@@ -19,7 +19,7 @@ if (!$usersdata->count()) {
         $thisuseremail = $user->email;
         $thisuserfirstname = $user->first_name;
         $thisuserlastname = $user->last_name;
-        $thisusergroup = $user->user_group;
+        $thisusergroup = $user->group;
         $thisuserregdate = date('m-d-Y', strtotime($user->regdatetime));
 
         if ($thisusergroup == 2) {

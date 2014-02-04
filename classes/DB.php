@@ -30,7 +30,6 @@ class DB {
 	}
 
 	public function query($sql, $params = array()) {
-
 		$this->_error = false;
 
 		if($this->_query = $this->_mysqli->prepare($sql)) {
@@ -71,12 +70,12 @@ class DB {
                 $results = $this->_query->get_result();
 
                 if($results) {
-                $this->_results = array();
-                while ($result = $results->fetch_object()) {
-                    $this->_results[] = $result;
-                }
+                    $this->_results = array();
+                    while ($result = $results->fetch_object()) {
+                        $this->_results[] = $result;
+                    }
 
-				$this->_count = $results->num_rows;
+				    $this->_count = $results->num_rows;
                 }
 			} else {
 				$this->_error = true;
@@ -96,7 +95,7 @@ class DB {
 
 	public function action($action, $table, $where = array()) {
 		if(count($where) === 3) {
-			$operators = array('=', '>', '<', '>=', '<=');
+			$operators = array('=', '>', '<', '>=', '<=', '!=');
 
 			$field 		= $where[0];
 			$operator 	= $where[1];
@@ -181,6 +180,10 @@ class DB {
 	public function first() {
 		return $this->_results[0];
 	}
+
+    public function last() {
+        return end($this->_results);
+    }
 
 	public function count() {
 		// Return count

@@ -187,6 +187,16 @@ body {
     margin-top: 5px;
 }
 
+.admin_salt {
+    border-bottom: 1px solid #eee;
+    padding: 5px;
+    margin-top: 15px;
+}
+
+#admin_salt_prefix_submit, #admin_salt_suffix_submit {
+    font-size: 12px;
+}
+
 /*** UPDATE SITE INFO STYLES ***/
 /* SITE LOGO */
 #update_logo_wrapper {
@@ -378,6 +388,7 @@ body {
     background-color: #6b83b6;
     width: 50px;
     text-align: center;
+    text-decoration: none;
     padding: 3px;
     cursor: pointer;
 }

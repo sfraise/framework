@@ -13,9 +13,9 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['token']);
-$userid = escape($_POST['userid']);
-$newpass = escape($_POST['newpass']);
+$token = Input::get('token');
+$userid = Input::get('userid');
+$newpass = Input::get('newpass');
 
 if (Token::check($token)) {
     $salt = Hash::salt(32);

@@ -12,7 +12,7 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['token']);
+$token = Input::get('token');
 
 // GET SITE DATA
 $sitedata = DB::getInstance();

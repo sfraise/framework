@@ -14,18 +14,18 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // GET VALUES
-$token = escape($_POST['register_token']);
-$email = escape($_POST['register_email']);
-$firstname = escape($_POST['register_firstname']);
-$lastname = escape($_POST['register_lastname']);
-$password = escape($_POST['register_password']);
-$passwordagain = escape($_POST['register_password_again']);
+$token = Input::get('register_token');
+$email = Input::get('register_email');
+$firstname = Input::get('register_firstname');
+$lastname = Input::get('register_lastname');
+$password = Input::get('register_password');
+$passwordagain = Input::get('register_password_again');
 
 // REGISTER
 if (Token::check($token)) {
     // GET SITE DATA
-    $sitedata = DB::getInstance();
-    $sitedata->query('SELECT * FROM site_data');
+    $db = DB::getInstance();
+    $sitedata = $db->query('SELECT * FROM site_data');
     if (!$sitedata->count()) {
         echo 'error';
     } else {
@@ -49,37 +49,64 @@ if (Token::check($token)) {
         }
     }
 
-    $user = new userAccess();
+    // GET SALT EXTENSIONS
+    $prefix = '';
+    $suffix = '';
+    $saltdata = $db->get('salts', array('id', '!=', '0'));
+    if($saltdata->count()) {
+        // IF EXTENSIONS ARE SET COMBINE THEM WITH THE STRING
+        $db->_saltdata = $saltdata->last();
+        $prefix = $db->_saltdata->prefix;
+        $suffix = $db->_saltdata->suffix;
+    }
 
+    // SALT AND HASH THE PASSWORD
     $salt = Hash::salt(32);
-    $hashpass = Hash::make($password, $salt);
-    $date = date('Y-m-d H:i:s');
+    $fullpass = $prefix . $password . $suffix;
+    $hashpass = Hash::make($fullpass, $salt);
+    $datetime = date('Y-m-d H:i:s');
+
+    // INSTANTIATE THE USER CLASSES
+    $useraccess = new userAccess();
+    $userdetails = new userDetails();
 
     try {
-        $user->create(array(
+        // CREATE THE USER ACCESS RECORD
+        $useraccess->create(array(
             'email' => $email,
             'current_password' => $hashpass,
+            'current_passdate' => $datetime,
             'salt' => $salt,
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'regdatetime' => $date,
+            'regdatetime' => $datetime,
             'account_status' => $active,
-            'user_group' => 1
+            'group' => 1
         ));
 
-        // GET NEW USER DATA
-        $newuser = new userAccess($email);
-        $userdata = $newuser->data();
-        $id = $userdata->id;
-        $firstname = $userdata->firstname;
-        $lastname = $userdata->lastname;
-        $salt = $userdata->salt;
-        $datetime = date('Y-m-d H:i:s');
+        // GET NEW USER ACCESS DATA
+        $newuseraccess = new userAccess($email);
+        $useraccessdata = $newuseraccess->data();
+        $id = $useraccessdata->id;
+        $salt = $useraccessdata->salt;
 
-        if ($verify == 0) {
+        // CREATE THE USER DETAILS RECORD
+        $userdetails->create(array(
+            'id' => $id,
+            'user_id' => $id,
+            'first_name' => $firstname,
+            'last_name' => $lastname,
+            'regdatetime' => $datetime
+        ));
+
+        // GET NEW USER DETAILS DATA
+        $newuserdetails = new userDetails($id);
+        $userdetailsdata = $newuserdetails->data();
+        $firstname = $userdetailsdata->first_name;
+        $lastname = $userdetailsdata->last_name;
+
+        if ($verify == 1) {
             /*** IF EMAIL VERIFICATION ENABLED ***/
             // SEND ACTIVATION LINK IN AN EMAIL
-            if (!$newuser->exists()) {
+            if (!$newuserdetails->exists()) {
                 // IF EMAIL DOESN'T EXIST
                 echo "Email doesn't exist";
             } else {
@@ -88,7 +115,7 @@ if (Token::check($token)) {
 
                 // ADD VERIFICATION CODE TO USER'S DATABASE TABLE
                 try {
-                    $user->update(array(
+                    $newuseraccess->update(array(
                         'verification_code' => $code
                     ), $id);
                 } catch (Exception $e) {
@@ -147,9 +174,9 @@ if (Token::check($token)) {
             /*** IF EMAIL VERIFICATION DISABLED ***/
             // SET USER'S VERIFICATION CODE TO NULL AND ADD VERIFICATION DATE
             try {
-                $user->update(array(
+                $newuseraccess->update(array(
                     'verification_code' => null,
-                    'verification_date' => $date
+                    'verification_date' => $datetime
                 ), $id);
             } catch (Exception $e) {
                 die($e->getMessage());
@@ -158,7 +185,7 @@ if (Token::check($token)) {
             // AUTO-LOGIN
             $rememberme = 'on';
             $remember = ($rememberme === 'on') ? true : false;
-            $login = $user->login($email, $password, $remember);
+            $login = $newuseraccess->login($email, $password, $remember);
 
             if ($login) {
                 ?>

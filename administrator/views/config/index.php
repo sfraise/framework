@@ -29,6 +29,26 @@ if(!$verifyemail) {
         ";
 }
 
+// GET ALL SALT PREFIX AND SUFFIX RECORDS
+$salts = array();
+$saltdata = DB::getInstance();
+try {
+    $saltdata->query('SELECT * FROM salts');
+    if (!$saltdata->count()) {
+        $salts[] = 'No Salts Exist';
+    } else {
+        $i = 1;
+        foreach ($saltdata->results() as $salt) {
+            $prefix = $salt->prefix;
+            $suffix = $salt->suffix;
+            $fromdate = date('M, dS Y g:ia', strtotime($salt->from_datetime));
+            $salts[] = "Prefix: ".$prefix." Suffix: ".$suffix." From Date: ".$fromdate."";
+        }
+    }
+} catch (Exception $e) {
+    die($e->getMessage());
+}
+
 echo 'Configuration';
 ?>
 
@@ -54,6 +74,17 @@ echo 'Configuration';
             </div>
             <div style="clear:both;"></div>
             <div id="admin_config_verify_message"></div>
+        </div>
+    </div>
+    <div class="admin_salt">
+        <div id="admin_salt_existing">
+            <?php echo implode('<br />', $salts); ?>
+        </div>
+        <div class="admin_salt_add_label">
+            Add new salt extension:
+        </div>
+        <div class="admin_salt_add_inputs">
+            <input type="text" id="admin_salt_prefix_input" value="" placeholder="Salt Prefix" /> <input type="text" id="admin_salt_suffix_input" value="" placeholder="Salt Suffix" /> <a href="#" class="submit_button" id="admin_salt_ext_submit">Submit</a> <span id="admin_salt_ext_message"></span>
         </div>
     </div>
 </div>

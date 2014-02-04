@@ -12,8 +12,8 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['forgotpass_token']);
-$email = escape($_POST['forgotpass_email']);
+$token = Input::get('forgotpass_token');
+$email = Input::get('forgotpass_email');
 
 $user = new userAccess($email);
 

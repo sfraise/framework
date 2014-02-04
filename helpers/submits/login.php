@@ -11,10 +11,10 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['login_token']);
-$email = escape($_POST['login_email']);
-$password = escape($_POST['login_password']);
-$rememberme = escape($_POST['login_remember']);
+$token = Input::get('login_token');
+$email = Input::get('login_email');
+$password = Input::get('login_password');
+$rememberme = Input::get('login_remember');
 
 // LOGIN
 if (Token::check($token)) {

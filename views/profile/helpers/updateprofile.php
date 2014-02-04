@@ -12,10 +12,10 @@ session_start();
 include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
 
 // GET VALUES
-$token = escape($_POST['token']);
-$myid = escape($_POST['myid']);
-$field = escape($_POST['field']);
-$newvalue = escape($_POST['newvalue']);
+$token = Input::get('token');
+$myid = Input::get('myid');
+$field = Input::get('field');
+$newvalue = Input::get('newvalue');
 
 if (Token::check($token)) {
     $user = new userDetails($myid);
