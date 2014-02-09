@@ -1,4 +1,6 @@
 <?php
+set_include_path(dirname(__FILE__));
+
 // INCLUDE INIT FILE
 include_once 'core/init.php';
 

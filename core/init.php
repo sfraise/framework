@@ -21,12 +21,12 @@ $GLOBALS['config'] = array(
 
 // Autoload classes
 function autoload($class) {
-	require_once $_SERVER['DOCUMENT_ROOT'] . '/classes/' . $class . '.php';
+	require_once 'classes/' . $class . '.php';
 }
 spl_autoload_register('autoload');
 
 // Include helpers
-require_once $_SERVER['DOCUMENT_ROOT'] . '/helpers/sanitize.php';
+require_once 'helpers/sanitize.php';
 
 // Check for users that have requested to be remembered
 if(Cookie::exists(Config::get('remember/cookie_name'))) {

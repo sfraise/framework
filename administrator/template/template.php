@@ -24,7 +24,7 @@
 <div class="pagewrapper">
     <!-- HEADER (administrator/modules/header.php) -->
     <div class="header">
-        <?php require_once 'modules/header.php'; ?>
+        <?php require_once 'administrator/modules/header.php'; ?>
     </div>
     <div class="adminmain">
         <!-- IF USER IS LOGGED IN -->
@@ -33,11 +33,11 @@
             <?php if($user->hasPermission('sales')) { ?>
                 <!-- TOP MENU (administrator/modules/topmenu.php) -->
                 <div class="admintopmenu">
-                    <?php require_once 'modules/topmenu.php'; ?>
+                    <?php require_once 'administrator/modules/topmenu.php'; ?>
                 </div>
                 <!-- MAIN OPTION VIEWS (administrator/views/'option'/index.php) -->
                 <div class="adminmainbody">
-                    <?php require_once 'helpers/router.php'; ?>
+                    <?php require_once 'administrator/helpers/router.php'; ?>
                 </div>
                 <div style="clear:both;"></div>
             <!-- IF USER IS NOT AT LEAST A MOD USER TYPE -->
@@ -55,7 +55,7 @@
     </div>
     <!-- FOOTER (administrator/modules/footer.php) -->
     <div class="footer">
-        <?php require_once 'modules/footer.php'; ?>
+        <?php require_once 'administrator/modules/footer.php'; ?>
     </div>
 </div>
 </body>

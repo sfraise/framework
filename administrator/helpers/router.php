@@ -10,8 +10,8 @@ $option = $_GET['option'];
 $task = $_GET['task'];
 
 if($option) {
-    require 'views/'.$option.'/index.php';
+    require 'administrator/views/'.$option.'/index.php';
 } else {
-    require 'views/index.php';
+    require 'administrator/views/index.php';
 }
 ?>

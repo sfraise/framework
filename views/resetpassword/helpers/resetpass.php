@@ -9,7 +9,7 @@
 session_start();
 
 // INCLUDE INIT FILE
-include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
+include_once 'core/init.php';
 
 // GET VALUES
 $userid = Input::get('userid');

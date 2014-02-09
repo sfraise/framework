@@ -5,9 +5,10 @@
  * Date: 1/14/14
  * Time: 3:11 PM
  */
+set_include_path('../');
 
 // INCLUDE INIT FILE
-include_once $_SERVER['DOCUMENT_ROOT'] . '/core/init.php';
+include_once 'core/init.php';
 
 // GET USER DATA
 $user = new userAccess();
@@ -45,7 +46,7 @@ if(!$sitedata->count()) {
 }
 
 // GET TEMPLATE
-require 'template/template.php';
+require 'administrator/template/template.php';
 
 // SET THE PAGE TOKEN
 echo "<input type=\"hidden\" id=\"token\" value=\"" . Token::generate() . "\">";
