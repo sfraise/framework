@@ -21,11 +21,15 @@
 
     $myData = new userDetails();
     $mydata = $myData->data();
-    $myfirstname = $mydata->first_name;
+    if(isset($mydata->first_name)) {
+        $myfirstname = $mydata->first_name;
+    } else {
+        $myfirstname = 'NA';
+    }
     ?>
     <?php if ($user->isLoggedIn()) { ?>
         <div class="loginmessage">
-            Hello <a href="index.php?option=profile&user=<?php echo $user->data()->id; ?>"><?php echo $myfirstname; ?></a>! - <?php echo $usertype; ?>
+            Hello <a href="index.php?option=profile&user=<?php echo $myid; ?>"><?php echo $myfirstname; ?></a>! - <?php echo $usertype; ?>
         </div>
         <div class="loginlinks">
             <?php echo $logout; ?> <a href="index.php?option=profile&user=<?php echo $myid; ?>">My Profile</a> <?php if($user->hasPermission('sales')) { ?><a href="/administrator/index.php">Admin Panel</a><?php } ?>

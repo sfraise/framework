@@ -22,7 +22,11 @@ if(!$user->exists()) {
     }
     // INSTANTIATE THE USER CLASS AND GET USER ID
     $myuserdata = $user->data();
-    $myid = $myuserdata->id;
+    if(isset($myuserdata->id)) {
+        $myid = $myuserdata->id;
+    } else {
+        $myid = 0;
+    }
 }
 
 // SET MY ID TO 0 IF NOT LOGGED IN
@@ -37,10 +41,31 @@ $logo = '';
 $siteData = DB::getInstance();
 $siteinfo = $siteData->get('site_data', array('id', '=', '1'));
 if($siteinfo->count()) {
-    $sitename = $siteinfo->first()->name;
-    $sitedescription = $siteinfo->first()->description;
-    $logo = $siteinfo->first()->logo;
+    // GET SITE NAME
+    if(isset($siteinfo->first()->name)) {
+        $sitename = $siteinfo->first()->name;
+    } else {
+        $sitename = 'No Site Name Entered!';
+    }
+
+    // GET SITE DESCRIPTION
+    if(isset($siteinfo->first()->description)) {
+        $sitedescription = $siteinfo->first()->description;
+    } else {
+        $sitedescription = 'No Site Description Entered!';
+    }
+
+    // GET SITE LOGO
+    if(isset($siteinfo->first()->logo)) {
+        $logo = $siteinfo->first()->logo;
+    } else {
+        $logo = '/images/logo/defaultlogo.jpg';
+    }
+} else {
+    echo 'Error: No site data found';
 }
+
+// SET VARIABLES IN CASE DATA IS EMPTY
 if(!$sitename) {
     $sitename = 'No Site Name Entered!';
 }
@@ -50,6 +75,8 @@ if(!$sitedescription) {
 if(!$logo) {
     $logo = '/images/logo/defaultlogo.jpg';
 }
+
+// BUILD THE LOGO
 $sitelogo = "<img id=\"site_logo\" src=\"".$logo."\" alt=\"".$sitename."\" title=\"".$sitename."\" />";
 
 // GET TEMPLATE
