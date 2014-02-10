@@ -31,35 +31,27 @@ if(!$myid) {
 }
 
 // GET SITE DATA
-$sitedata = DB::getInstance();
-$sitedata->query('SELECT * FROM site_data');
-
-if(!$sitedata->count()) {
-    echo 'error';
-} else {
-    foreach($sitedata->results() as $siteinfo) {
-        $sitename = $siteinfo->name;
-        if(!$sitename) {
-            $sitename = 'No Site Name Entered!';
-        }
-        $sitedescription = $siteinfo->description;
-        if(!$sitedescription) {
-            $sitedescription = 'No Site Description Entered!';
-        }
-        $logo = $siteinfo->logo;
-        if(!$logo) {
-            $logo = '/images/logo/defaultlogo.jpg';
-        }
-        $sitelogo = "<img id=\"site_logo\" src=\"".$logo."\" alt=\"".$sitename."\" title=\"".$sitename."\" />";
-    }
+$sitename = '';
+$sitedescription = '';
+$logo = '';
+$siteData = DB::getInstance();
+$siteinfo = $siteData->get('site_data', array('id', '=', '1'));
+if($siteinfo->count()) {
+    $sitename = $siteinfo->first()->name;
+    $sitedescription = $siteinfo->first()->description;
+    $logo = $siteinfo->first()->logo;
 }
+if(!$sitename) {
+    $sitename = 'No Site Name Entered!';
+}
+if(!$sitedescription) {
+    $sitedescription = 'No Site Description Entered!';
+}
+if(!$logo) {
+    $logo = '/images/logo/defaultlogo.jpg';
+}
+$sitelogo = "<img id=\"site_logo\" src=\"".$logo."\" alt=\"".$sitename."\" title=\"".$sitename."\" />";
 
 // GET TEMPLATE
 require 'template/template.php';
-
-// SET THE PAGE TOKEN
-echo "<input type=\"hidden\" id=\"token\" value=\"" . Token::generate() . "\">";
-
-// SET MY ID
-echo "<input type=\"hidden\" id=\"myid\" value=\"" . $myid . "\">";
 ?>

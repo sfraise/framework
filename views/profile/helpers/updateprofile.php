@@ -12,12 +12,11 @@ set_include_path('../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $myid = Input::get('myid');
 $field = Input::get('field');
 $newvalue = Input::get('newvalue');
 
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     $user = new userDetails($myid);
 
     try {
@@ -33,7 +32,3 @@ $user = new userDetails($myid);
 
 echo $user->userFields($myid, $field, 'text');
 ?>
-<script type="text/javascript">
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
-</script>

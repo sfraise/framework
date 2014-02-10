@@ -13,34 +13,54 @@ set_include_path('../../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $prefix = Input::get('prefix');
 $suffix = Input::get('suffix');
+$datetime = date('Y-m-d H:i:s');
 
 // CHECK TO MAKE SURE A TOKEN WAS PASSED
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     try {
-        $saltdata = DB::getInstance();
-        // UPDATE TO_DATETIME IN PREVIOUS RECORD
-        $saltdata->query("UPDATE salts SET to_datetime = NOW() WHERE to_datetime IS NULL");
+        $saltData = DB::getInstance();
+        $null = NULL;
+        // GET LAST SALT RECORD
+        $lastsalt = $saltData->get('salts', array('to_datetime', '<=>', $null));
+        if($lastsalt->count()) {
+            $lastsaltid = $lastsalt->last()->id;
 
-        // ADD NEW SALT EXTENSIONS TO DB
-        $saltdata->query("INSERT INTO salts (prefix, suffix, from_datetime, method) VALUES ('$prefix', '$suffix', NOW(), 'default')");
+            // UPDATE TO_DATETIME IN LAST RECORD
+            $saltData->update('salts', $lastsaltid, array(
+                'to_datetime' => $datetime
+            ));
+        }
 
-        // GET ALL SALT PREFIX AND SUFFIX RECORDS
+        // INSERT THE NEW RECORD
+        $saltData->insert('salts', array(
+            'prefix' => $prefix,
+            'suffix' => $suffix,
+            'from_datetime' => $datetime,
+            'method' => 'default'
+        ));
+
+        // GET NEW VALUES
         $salts = array();
-        $saltdata->query('SELECT * FROM salts');
-        if (!$saltdata->count()) {
+        $saltinfo = $saltData->get('salts', array('id', '!=', '0'));
+        if(!$saltinfo->count()) {
             $salts[] = 'No Salts Exist';
         } else {
-            $i = 1;
-            foreach ($saltdata->results() as $salt) {
-                $prefix = $salt->prefix;
-                $suffix = $salt->suffix;
-                $fromdate = date('M, dS Y g:ia', strtotime($salt->from_datetime));
-                $salts[] = "Prefix: " . $prefix . " Suffix: " . $suffix . " From Date: " . $fromdate . "";
+            foreach($saltinfo->results() as $salt) {
+                $newprefix = $salt->prefix;
+                $newsuffix =  $salt->suffix;
+                $newfromdate = date('M, dS Y g:ia', strtotime($salt->from_datetime));
+                $newtodate = $salt->to_datetime;
+                if(!$newtodate) {
+                    $newtodate = 'Current';
+                } else {
+                    $newtodate = date('M, dS Y g:ia', strtotime($salt->to_datetime));
+                }
+                $salts[] = "Prefix: " . $newprefix . " Suffix: " . $newsuffix . " From Date: " . $newfromdate . " To Date: " . $newtodate . "";
             }
         }
+
         echo 'The new salt extension has been added';
     } catch (Exception $e) {
         die($e->getMessage());
@@ -50,6 +70,4 @@ if (Token::check($token)) {
 <script type="text/javascript">
     // UPDATE THE SALT LIST
     $('#admin_salt_existing').html('<?php echo implode('<br />', $salts); ?>');
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
 </script>

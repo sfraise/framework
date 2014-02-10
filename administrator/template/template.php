@@ -21,6 +21,7 @@
     <script type="text/javascript" src="/administrator/js/admin.js"></script>
 </head>
 <body>
+<input type="hidden" id="myid" value="<?php echo $myid; ?>" />
 <div class="pagewrapper">
     <!-- HEADER (administrator/modules/header.php) -->
     <div class="header">

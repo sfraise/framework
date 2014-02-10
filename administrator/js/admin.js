@@ -4,7 +4,6 @@
 $(document).ready(function () {
     // REGISTER
     $('#register_submit').click(function() {
-        var register_token = $('#token').val();
         var register_email = $('#register_email').val();
         var register_firstname = $('#register_firstname').val();
         var register_lastname = $('#register_lastname').val();
@@ -15,7 +14,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/helpers/submits/register.php',
             type: 'POST',
-            data: {register_token: register_token, register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again},
+            data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again},
             success: function (data) {
                 $('#register_message').html(data);
             },
@@ -28,7 +27,6 @@ $(document).ready(function () {
 
     // LOGIN
     $('#login_submit').click(function() {
-        var login_token = $('#token').val();
         var login_email = $('#login_email').val();
         var login_password = $('#login_password').val();
         var login_remember = $('#login_remember').val();
@@ -37,7 +35,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/helpers/submits/login.php',
             type: 'POST',
-            data: {login_token: login_token, login_email: login_email, login_password: login_password, login_remember: login_remember},
+            data: {login_email: login_email, login_password: login_password, login_remember: login_remember},
             success: function (data) {
                 $('#login_message').html(data);
             },
@@ -50,14 +48,13 @@ $(document).ready(function () {
 
     // FORGOT PASSWORD
     $('#forgotpass_submit').click(function() {
-        var forgotpass_token = $('#token').val();
         var forgotpass_email = $('#forgotpass_email').val();
 
         $('#forgotpass_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
         $.ajax({
             url: '/administrator/helpers/submits/forgotpass.php',
             type: 'POST',
-            data: {forgotpass_token: forgotpass_token, forgotpass_email: forgotpass_email},
+            data: {forgotpass_email: forgotpass_email},
             success: function (data) {
                 $('#forgotpass_message').html(data);
             },
@@ -71,14 +68,13 @@ $(document).ready(function () {
     /*** CONFIG SECTION ***/
     // SET VERIFICATION OPTION
     $('#admin_config_verify_button').click(function() {
-        var token = $('#token').val();
         var checked = $('#admin_config_verify_checked').val();
 
         $('#admin_config_veirfy_button').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
         $.ajax({
             url: '/administrator/views/config/helpers/verify.php',
             type: 'POST',
-            data: {token: token},
+            data: {},
             success: function (data) {
                 $('#admin_config_verify_button').html(data);
                 if(!checked || checked == 0) {
@@ -100,14 +96,13 @@ $(document).ready(function () {
     // UPDATE VERIFICATION EMAIL
     $('#admin_config_verify_email_submit').click(function() {
         tinyMCE.get("admin_config_verify_email_textarea").save();
-        var token = $('#token').val();
         var email = $('#admin_config_verify_email_textarea').val();
 
         $('#admin_config_verify_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
         $.ajax({
             url: '/administrator/views/config/helpers/verifyemail.php',
             type: 'POST',
-            data: {token: token, email: email},
+            data: {email: email},
             success: function (data) {
                 $('#admin_config_verify_message').html(data);
             },
@@ -120,7 +115,6 @@ $(document).ready(function () {
 
     // UPDATE SALT PREFIX
     $('#admin_salt_ext_submit').click(function() {
-        var token = $('#token').val();
         var prefix = $('#admin_salt_prefix_input').val();
         var suffix = $('#admin_salt_suffix_input').val();
 
@@ -128,7 +122,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/views/config/helpers/saltext.php',
             type: 'POST',
-            data: {token: token, prefix: prefix, suffix: suffix},
+            data: {prefix: prefix, suffix: suffix},
             success: function (data) {
                 $('#admin_salt_ext_message').html(data);
                 $('#admin_salt_prefix_input').val('');
@@ -154,7 +148,6 @@ $(document).ready(function () {
 
     // EDIT SITE INFO
     $('#editsite_submit').click(function () {
-        var editsitetoken = $('#token').val();
         var editsitename = $('#editsitename').val();
         var editsitedesc = $('#editsitedesc').val();
 
@@ -162,7 +155,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/views/sitedata/helpers/updatesitedata.php',
             type: 'POST',
-            data: {editsitetoken: editsitetoken, editsitename: editsitename, editsitedesc: editsitedesc},
+            data: {editsitename: editsitename, editsitedesc: editsitedesc},
             success: function (data) {
                 $('#editsite_message').html(data);
             },
@@ -204,7 +197,6 @@ $(document).ready(function () {
 
     // MANAGE MEMBERS PROMOTE/DEMOTE
     $('select[id^=amu_promote_select_]').on('change', function () {
-        var token = $('#token').val();
         var userid = $(this).attr('rel');
         var type = $(this).val();
         if (type == 2) {
@@ -221,7 +213,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/views/users/helpers/promoteuser.php',
             type: 'POST',
-            data: {token: token, userid: userid, type: type},
+            data: {userid: userid, type: type},
             success: function (data) {
                 $('#amu_promote_select_wrapper_' + userid).html(data);
             },
@@ -234,7 +226,6 @@ $(document).ready(function () {
 
     // MANAGE MEMBERS CHANGE PASSWORD
     $('a[id^=amu_changepass_submit_]').click(function () {
-        var token = $('#token').val();
         var userid = $(this).attr('rel');
         var newpass = $('#amu_changepass_input_' + userid).val();
 
@@ -242,7 +233,7 @@ $(document).ready(function () {
         $.ajax({
             url: '/administrator/views/users/helpers/changepass.php',
             type: 'POST',
-            data: {token: token, userid: userid, newpass: newpass},
+            data: {userid: userid, newpass: newpass},
             success: function (data) {
                 $('#amu_changepass_message_' + userid).html(data);
                 $('#amu_changepass_input_' + userid).val('');

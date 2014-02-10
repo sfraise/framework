@@ -13,11 +13,10 @@ set_include_path('../../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $userid = Input::get('userid');
 $newpass = Input::get('newpass');
 
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     $salt = Hash::salt(32);
     $hashpass = Hash::make($newpass, $salt);
     $user = new userAccess($userid);

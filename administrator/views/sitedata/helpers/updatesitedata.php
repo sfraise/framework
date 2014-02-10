@@ -1,4 +1,5 @@
-<script type="text/javascript" src="js/main.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script type="text/javascript" src="js/admin.js"></script>
 <?php
 /**
  * Created by PhpStorm.
@@ -12,22 +13,42 @@ set_include_path('../../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('editsitetoken');
 $name = Input::get('editsitename');
 $description = Input::get('editsitedesc');
 
-// GET SITE DATA
-$sitedata = DB::getInstance();
-
 // CHECK TO MAKE SURE A TOKEN WAS PASSED
-if(Token::check($token)) {
-    // UPDATE THE DATABASE
+if(Token::check(Token::generate())) {
     try {
-        $sitedata->query("UPDATE site_data SET name = '$name', description = '$description' WHERE id = 1");
+        $siteData = DB::getInstance();
+
+        // UPDATE THE DATABASE
+        $siteData->update('site_data', '1', array(
+            'name' => $name,
+            'description' => $description
+        ));
+
+        // GET NEW VALUES
+        $sitename = '';
+        $sitedescription = '';
+        $siteinfo = $siteData->get('site_data', array('id', '=', '1'));
+        if($siteinfo->count()) {
+            $sitename = $siteinfo->first()->name;
+            $sitedescription = $siteinfo->first()->description;
+        }
+        if(!$sitename) {
+            $sitename = 'No Site Name Entered!';
+        }
+        if(!$sitedescription) {
+            $sitedescription = 'No Site Description Entered!';
+        }
+
+        echo 'The site info has been updated.';
     } catch(Exception $e) {
         die($e->getMessage());
     }
 }
-
-echo 'The site info has been updated.'
 ?>
+<script type="text/javascript">
+    $('#editsitename').val('<?php echo $sitename; ?>');
+    $('#editsitedesc').val('<?php echo $sitedescription; ?>');
+</script>

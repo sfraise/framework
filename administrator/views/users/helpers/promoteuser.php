@@ -7,11 +7,10 @@ set_include_path('../../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $userid = Input::get('userid');
 $type = Input::get('type');
 
-if(Token::check($token)) {
+if(Token::check(Token::generate())) {
     $user = new userAccess($userid);
 
     // UPDATE THE DATABASE
@@ -77,8 +76,6 @@ if(Token::check($token)) {
     echo $thisuserpromote;
     ?>
     <script type="text/javascript">
-        // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-        $('#token').val('<?php echo Token::generate(); ?>');
         // UPDATE THE USER TYPE ON PARENT PAGE
         $('#amu_type_<?php echo $userid; ?>').html('<?php echo $thisusertype; ?>');
     </script>

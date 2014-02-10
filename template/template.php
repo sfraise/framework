@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/js/main.js"></script>
 </head>
 <body>
+<input type="hidden" id="myid" value="<?php echo $myid; ?>" />
 <div class="pagewrapper">
     <!-- HEADER (modules/header.php) -->
     <div class="header">

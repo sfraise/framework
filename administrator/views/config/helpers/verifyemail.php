@@ -11,15 +11,17 @@ set_include_path('../../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $email = Input::get('email');
 
 // MAKE SURE THE PAGE TOKEN IS VALID
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     // UPDATE THE DATABASE
     try {
-        $sitedata = DB::getInstance();
-        $sitedata->query("UPDATE site_data SET verify_email = '$email' WHERE id = 1");
+        $siteData = DB::getInstance();
+        // UPDATE THE DATABASE
+        $siteData->update('site_data', '1', array(
+            'verify_email' => $email
+        ));
         echo 'The email has been updated';
     } catch(Exception $e) {
         die($e->getMessage());
@@ -28,7 +30,3 @@ if (Token::check($token)) {
     echo 'The token is invalid';
 }
 ?>
-<script type="text/javascript">
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
-</script>

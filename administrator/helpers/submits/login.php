@@ -11,13 +11,12 @@ set_include_path('../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('login_token');
 $email = Input::get('login_email');
 $password = Input::get('login_password');
 $rememberme = Input::get('login_remember');
 
 // LOGIN
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     $user = new userAccess($email);
     $userdata = $user->data();
     $userid = $userdata->id;
@@ -47,12 +46,6 @@ if (Token::check($token)) {
             }
         } else {
             echo '<div class="loginerror">You need to activate your account before logging in</div>';
-            ?>
-            <script type="text/javascript">
-                // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-                $('#token').val('<?php echo Token::generate(); ?>');
-            </script>
-        <?php
         }
     }
 }

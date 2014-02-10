@@ -30,19 +30,24 @@ if(!$verifyemail) {
 }
 
 // GET ALL SALT PREFIX AND SUFFIX RECORDS
-$salts = array();
-$saltdata = DB::getInstance();
+$saltData = DB::getInstance();
 try {
-    $saltdata->query('SELECT * FROM salts');
-    if (!$saltdata->count()) {
+    $salts = array();
+    $saltinfo = $saltData->get('salts', array('id', '!=', '0'));
+    if(!$saltinfo->count()) {
         $salts[] = 'No Salts Exist';
     } else {
-        $i = 1;
-        foreach ($saltdata->results() as $salt) {
-            $prefix = $salt->prefix;
-            $suffix = $salt->suffix;
-            $fromdate = date('M, dS Y g:ia', strtotime($salt->from_datetime));
-            $salts[] = "Prefix: ".$prefix." Suffix: ".$suffix." From Date: ".$fromdate."";
+        foreach($saltinfo->results() as $salt) {
+            $newprefix = $salt->prefix;
+            $newsuffix =  $salt->suffix;
+            $newfromdate = date('M, dS Y g:ia', strtotime($salt->from_datetime));
+            $newtodate = $salt->to_datetime;
+            if(!$newtodate) {
+                $newtodate = 'Current';
+            } else {
+                $newtodate = date('M, dS Y g:ia', strtotime($salt->to_datetime));
+            }
+            $salts[] = "Prefix: " . $newprefix . " Suffix: " . $newsuffix . " From Date: " . $newfromdate . " To Date: " . $newtodate . "";
         }
     }
 } catch (Exception $e) {

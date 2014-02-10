@@ -11,32 +11,31 @@ set_include_path('../../../../');
 // INCLUDE INIT FILE
 include_once 'core/init.php';
 
-// GET VALUES
-$token = Input::get('token');
-
-// GET SITE DATA
-$sitedata = DB::getInstance();
-$sitedata->query('SELECT * FROM site_data');
-if(!$sitedata->count()) {
-    echo 'error';
-} else {
-    foreach($sitedata->results() as $siteinfo) {
-        $option = $siteinfo->verify;
-    }
-}
-if($option == 0) {
-    $newoption = '1';
-} elseif($option == 1) {
-    $newoption = '0';
-} else {
-    $newoption = 'Error';
-}
-
 // CHECK TO MAKE SURE A TOKEN WAS PASSED
-if(Token::check($token)) {
+if(Token::check(Token::generate())) {
+    // GET SITE DATA
+    $siteData = DB::getInstance();
+    $option = '';
+    $siteinfo = $siteData->get('site_data', array('id', '=', '1'));
+    if($siteinfo->count()) {
+        $option = $siteinfo->first()->verify;
+    }
+    if($option == 0) {
+        $newoption = '1';
+    } elseif($option == 1) {
+        $newoption = '0';
+    } else {
+        $newoption = 'Error';
+    }
+
     // UPDATE THE DATABASE
     try {
-        $sitedata->query("UPDATE site_data SET verify = '$newoption' WHERE id = 1");
+        // UPDATE THE DATABASE
+        $siteData->update('site_data', '1', array(
+            'verify' => $newoption
+        ));
+
+        // UPDATE THE CHECKBOX
         if($newoption == 1) {
             echo "<img src=\"/images/checkmark.png\" alt=\"Selected\" />";
         } elseif($newoption == 0) {
@@ -49,7 +48,3 @@ if(Token::check($token)) {
     echo 'The token is invalid';
 }
 ?>
-<script type="text/javascript">
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
-</script>

@@ -13,11 +13,10 @@ include_once 'core/init.php';
 
 // GET VALUES
 $userid = Input::get('userid');
-$token = Input::get('token');
 $newpass = Input::get('newpass');
 
 // MAKE SURE THE PAGE TOKEN IS VALID
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     try {
         // SET THE SALT AND HASH
         $salt = Hash::salt(32);
@@ -35,7 +34,3 @@ if (Token::check($token)) {
     echo 'The token is invalid';
 }
 ?>
-<script type="text/javascript">
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
-</script>

@@ -4,7 +4,6 @@
 $(document).ready(function() {
     // REGISTER
     $('#register_submit').click(function() {
-        var register_token = $('#token').val();
         var register_email = $('#register_email').val();
         var register_firstname = $('#register_firstname').val();
         var register_lastname = $('#register_lastname').val();
@@ -15,7 +14,7 @@ $(document).ready(function() {
         $.ajax({
             url: 'helpers/submits/register.php',
             type: 'POST',
-            data: {register_token: register_token, register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again},
+            data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again},
             success: function (data) {
                 $('#register_message').html(data);
             },
@@ -28,7 +27,6 @@ $(document).ready(function() {
 
     // LOGIN
     $('#login_submit').click(function() {
-        var login_token = $('#token').val();
         var login_email = $('#login_email').val();
         var login_password = $('#login_password').val();
         var login_remember = $('#login_remember').val();
@@ -37,7 +35,7 @@ $(document).ready(function() {
         $.ajax({
             url: 'helpers/submits/login.php',
             type: 'POST',
-            data: {login_token: login_token, login_email: login_email, login_password: login_password, login_remember: login_remember},
+            data: {login_email: login_email, login_password: login_password, login_remember: login_remember},
             success: function (data) {
                 $('#login_message').html(data);
             },
@@ -113,7 +111,6 @@ $(document).ready(function() {
 
     // PROFILE CHANGE PASSWORD
     $('#profile_change_password_submit').click(function () {
-        var token = $('#token').val();
         var userid = $('#myid').val();
         var newpass = $('#profile_change_password_input').val();
 
@@ -121,7 +118,7 @@ $(document).ready(function() {
         $.ajax({
             url: '/views/profile/helpers/changepass.php',
             type: 'POST',
-            data: {token: token, userid: userid, newpass: newpass},
+            data: {userid: userid, newpass: newpass},
             success: function (data) {
                 $('#profile_change_password_message').html(data);
                 $('#profile_change_password_input').val('');
@@ -161,7 +158,6 @@ $(document).ready(function() {
 
     // SUBMIT FIELD CHANGE
     $('a[id^=submit_profile_input_]').click(function() {
-        var token = $('#token').val();
         var myid = $('#myid').val();
         var field = $(this).attr('rel');
         var newvalue = $('#edit_profile_' + field).val();
@@ -170,7 +166,7 @@ $(document).ready(function() {
         $.ajax({
             url: 'views/profile/helpers/updateprofile.php',
             type: 'POST',
-            data: {token: token, myid: myid, field: field, newvalue: newvalue},
+            data: {myid: myid, field: field, newvalue: newvalue},
             success: function (data) {
                 $('#profile_field_wrapper_' + field).html(data);
             },

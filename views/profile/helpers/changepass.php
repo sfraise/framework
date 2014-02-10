@@ -12,11 +12,10 @@ set_include_path('../../../');
 include_once 'core/init.php';
 
 // GET VALUES
-$token = Input::get('token');
 $userid = Input::get('userid');
 $newpass = Input::get('newpass');
 
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     // GET SALT EXTENSIONS FROM LATEST RECORD
     $prefix = '';
     $suffix = '';
@@ -54,7 +53,3 @@ echo $fullpass;
     echo 'The token is invalid';
 }
 ?>
-<script type="text/javascript">
-    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-    $('#token').val('<?php echo Token::generate(); ?>');
-</script>

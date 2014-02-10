@@ -14,7 +14,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 // GET VALUES
-$token = Input::get('register_token');
 $email = Input::get('register_email');
 $firstname = Input::get('register_firstname');
 $lastname = Input::get('register_lastname');
@@ -22,7 +21,7 @@ $password = Input::get('register_password');
 $passwordagain = Input::get('register_password_again');
 
 // REGISTER
-if (Token::check($token)) {
+if (Token::check(Token::generate())) {
     // GET SITE DATA
     $db = DB::getInstance();
     $sitedata = $db->query('SELECT * FROM site_data');
@@ -196,12 +195,6 @@ if (Token::check($token)) {
             <?php
             } else {
                 echo '<p>There was a problem logging in.</p>';
-                ?>
-                <script type="text/javascript">
-                    // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
-                    $('#token').val('<?php echo Token::generate(); ?>');
-                </script>
-            <?php
             }
         }
     } catch (Exception $e) {
