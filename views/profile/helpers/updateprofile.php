@@ -1,4 +1,4 @@
-<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
 <?php
 /**
  * Created by PhpStorm.
@@ -6,7 +6,7 @@
  * Date: 1/20/14
  * Time: 8:02 PM
  */
-session_start();
+set_include_path('../../../');
 
 // INCLUDE INIT FILE
 include_once 'core/init.php';
@@ -22,7 +22,7 @@ if (Token::check($token)) {
 
     try {
         $user->update(array(
-            $field => "$newvalue"
+            $field => $newvalue
         ), $myid);
     } catch (Exception $e) {
         die($e->getMessage());

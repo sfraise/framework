@@ -37,7 +37,7 @@ class DB {
                 $type = '';                             //initial string with types
                 $values = array();
                 foreach ($params as $key => $value) {   //for each element, determine type and add
-                    if (is_int($value)) {
+                    if (is_numeric($value)) {
                         $type .= 'i';                   //integer
                     } elseif (is_float($value)) {
                         $type .= 'd';                   //double
@@ -79,9 +79,13 @@ class DB {
                 }
 			} else {
 				$this->_error = true;
-                printf($this->_mysqli->error);
+                printf('Error: ', $this->_mysqli->error);
 			}
-		}
+		} else {
+            $this->_error = true;
+            printf('Error: ', $this->_mysqli->error);
+        }
+
 		return $this;
 	}
 

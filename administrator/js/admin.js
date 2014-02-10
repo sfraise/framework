@@ -224,7 +224,6 @@ $(document).ready(function () {
             data: {token: token, userid: userid, type: type},
             success: function (data) {
                 $('#amu_promote_select_wrapper_' + userid).html(data);
-                $('#amu_type_' + userid).html(usertype);
             },
             error: function (errorThrown) {
                 $('#amu_promote_select_wrapper_' + userid).html(errorThrown);

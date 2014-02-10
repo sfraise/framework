@@ -1,7 +1,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="js/admin.js"></script>
 <?php
-session_start();
+set_include_path('../../../../');
 
 // INCLUDE INIT FILE
 include_once 'core/init.php';
@@ -12,14 +12,26 @@ $userid = Input::get('userid');
 $type = Input::get('type');
 
 if(Token::check($token)) {
-    $userdata = DB::getInstance();
+    $user = new userAccess($userid);
+
     // UPDATE THE DATABASE
     try {
-        $userdata->query("UPDATE users SET group = '$type' WHERE id = $userid");
+        $user->update(array(
+            'user_group' => $type
+        ), $userid);
 
-        if ($type == 2) {
-            $thisusertype = 'Super Administrator';
-            $thisuserpromote = "
+        echo 'The password has been updated';
+    } catch (Exception $e) {
+        die($e->getMessage());
+    }
+
+    // GET NEW USER DATA
+    $newuser = new userAccess($userid);
+    $newuserdata = $newuser->data();
+    $newtype = $newuserdata->user_group;
+    if ($newtype == 2) {
+        $thisusertype = 'new Super Administrator';
+        $thisuserpromote = "
                             <div id=\"amu_promote_select_wrapper_".$userid."\">
                             <select id=\"amu_promote_select_".$userid."\" rel=\"".$userid."\" class=\"amu_promote_select\">
                                 <option selected = \"selected\" value=\"\">Promote or Demote</option>
@@ -28,9 +40,9 @@ if(Token::check($token)) {
                                 <option value=\"1\">Demote to Registered</option>
                             </select> - <a id=\"amu_promote_select_close_".$userid."\" class=\"amu_promote_select_close\" rel=\"".$userid."\">Hide</a>
                             </div>";
-        } elseif ($type == 3) {
-            $thisusertype = 'Administrator';
-            $thisuserpromote = "
+    } elseif ($newtype == 3) {
+        $thisusertype = 'Administrator';
+        $thisuserpromote = "
                             <div id=\"amu_promote_select_wrapper_".$userid."\">
                             <select id=\"amu_promote_select_".$userid."\" rel=\"".$userid."\" class=\"amu_promote_select\">
                                 <option selected = \"selected\" value=\"\">Promote or Demote</option>
@@ -39,9 +51,9 @@ if(Token::check($token)) {
                                 <option value=\"1\">Demote to Registered</option>
                             </select> - <a id=\"amu_promote_select_close_".$userid."\" class=\"amu_promote_select_close\" rel=\"".$userid."\">Hide</a>
                             </div>";
-        } elseif ($type == 4) {
-            $thisusertype = 'Moderator';
-            $thisuserpromote = "
+    } elseif ($newtype == 4) {
+        $thisusertype = 'Moderator';
+        $thisuserpromote = "
                             <div id=\"amu_promote_select_wrapper_".$userid."\">
                             <select id=\"amu_promote_select_".$userid."\" rel=\"".$userid."\" class=\"amu_promote_select\">
                                 <option selected = \"selected\" value=\"\">Promote or Demote</option>
@@ -50,9 +62,9 @@ if(Token::check($token)) {
                                 <option value=\"1\">Demote to Registered</option>
                             </select> - <a id=\"amu_promote_select_close_".$userid."\" class=\"amu_promote_select_close\" rel=\"".$userid."\">Hide</a>
                             </div>";
-        } else {
-            $thisusertype = 'Registered';
-            $thisuserpromote = "
+    } else {
+        $thisusertype = 'Registered';
+        $thisuserpromote = "
                             <div id=\"amu_promote_select_wrapper_".$userid."\">
                             <select id=\"amu_promote_select_".$userid."\" rel=\"".$userid."\" class=\"amu_promote_select\">
                                 <option selected = \"selected\" value=\"\">Promote or Demote</option>
@@ -61,15 +73,14 @@ if(Token::check($token)) {
                                 <option value=\"4\">Promote to Moderator</option>
                             </select> - <a id=\"amu_promote_select_close_".$userid."\" class=\"amu_promote_select_close\" rel=\"".$userid."\">Hide</a>
                             </div>";
-        }
-        echo $thisuserpromote;
-    } catch(Exception $e) {
-        die($e->getMessage());
     }
+    echo $thisuserpromote;
     ?>
     <script type="text/javascript">
         // RESET THE PARENT PAGE TOKEN IN ORDER TO VALIDATE ON NEXT TRY
         $('#token').val('<?php echo Token::generate(); ?>');
+        // UPDATE THE USER TYPE ON PARENT PAGE
+        $('#amu_type_<?php echo $userid; ?>').html('<?php echo $thisusertype; ?>');
     </script>
     <?php
 } else {

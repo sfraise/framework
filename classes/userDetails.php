@@ -64,7 +64,7 @@ class userDetails extends userAccess {
             $field_input = 'Please enter the type method';
         }
 
-        if($field == 'current_password' || $field == 'salt' || $field == 'regdatetime' || $field == 'group') {
+        if($field == 'current_password' || $field == 'salt' || $field == 'regdatetime' || $field == 'user_group') {
             $field_display = 'This field is private';
         } else {
             $field_display = "

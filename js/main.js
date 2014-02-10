@@ -168,7 +168,7 @@ $(document).ready(function() {
 
         $('#profile_field_wrapper_' + field).html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
         $.ajax({
-            url: '/views/profile/helpers/updateprofile.php',
+            url: 'views/profile/helpers/updateprofile.php',
             type: 'POST',
             data: {token: token, myid: myid, field: field, newvalue: newvalue},
             success: function (data) {

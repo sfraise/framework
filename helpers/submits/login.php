@@ -5,7 +5,7 @@
  * Date: 1/13/14
  * Time: 8:13 PM
  */
-session_start();
+set_include_path('../../');
 
 // INCLUDE INIT FILE
 include_once 'core/init.php';
