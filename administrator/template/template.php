@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title><?php echo $sitename; ?> Admin</title>
+    <title><?php echo $sitename; ?> - Admin Panel</title>
     <meta name="description" content="<?php echo $sitedescription; ?>" />
 
     <!-- STYLESHEETS -->
