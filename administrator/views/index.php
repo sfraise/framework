@@ -6,5 +6,15 @@
  * Time: 4:18 PM
  */
 
-echo 'Administrator Home Page';
+if($user->hasPermission('manager')) {
+    require 'homepages/manager.php';
+} elseif($user->hasPermission('sales')) {
+    require 'homepages/sales.php';
+} elseif($user->hasPermission('type2')) {
+    require 'homepages/type2.php';
+} elseif($user->hasPermission('type1')) {
+    require 'homepages/type1.php';
+} else {
+    require 'homepages/guest.php';
+}
 ?>
