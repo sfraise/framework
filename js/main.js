@@ -17,16 +17,16 @@ $(document).ready(function() {
         if (!$('input#register_tos').is(':checked')) {
             $('#register_error').html('You must accept the terms of service!');
         } else {
-            $('#register_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
+            $('#register_error').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
             $.ajax({
                 url: 'helpers/submits/register.php',
                 type: 'POST',
-                data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again, register_cookies: register_cookies, register_tos: register_tos},
+                data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again, register_cookies: register_cookies},
                 success: function (data) {
-                    $('#register_message').html(data);
+                    $('#register_error').html(data);
                 },
                 error: function (errorThrown) {
-                    $('#register_message').html(errorThrown);
+                    $('#register_error').html(errorThrown);
                 }
             });
         }
