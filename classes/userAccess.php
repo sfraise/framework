@@ -94,7 +94,7 @@ class userAccess {
 				if($this->data()->current_password === Hash::make($password, $this->data()->salt)) {
 					Session::put($this->_sessionName, $this->data()->id);
 
-					if($remember) {
+					if($remember && $this->data()->accept_cookies == 1) {
 						$hash = Hash::unique();
 						$hashCheck = $this->_db->get('users_session', array('user_id', '=', $this->data()->id));
 
