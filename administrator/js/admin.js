@@ -9,12 +9,18 @@ $(document).ready(function () {
         var register_lastname = $('#register_lastname').val();
         var register_password = $('#register_password').val();
         var register_password_again = $('#register_password_again').val();
+        if ($('input#register_cookies').is(':checked')) {
+            var register_cookies = 1;
+        } else {
+            var register_cookies = 0;
+        }
+        var register_tos = $('#register_tos').val();
 
         $('#register_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
         $.ajax({
             url: '/administrator/helpers/submits/register.php',
             type: 'POST',
-            data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again},
+            data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again, register_cookies: register_cookies, register_tos: register_tos},
             success: function (data) {
                 $('#register_message').html(data);
             },

@@ -10,42 +10,31 @@ set_include_path('../../');
 // INCLUDE INIT FILE
 include_once 'core/init.php';
 
-error_reporting(E_ALL);
-ini_set('display_errors', '1');
-
 // GET VALUES
 $email = Input::get('register_email');
 $firstname = Input::get('register_firstname');
 $lastname = Input::get('register_lastname');
 $password = Input::get('register_password');
 $passwordagain = Input::get('register_password_again');
+$regcookie = Input::get('register_cookies');
+$registertos = Input::get('register_tos');
 
 // REGISTER
 if (Token::check(Token::generate())) {
     // GET SITE DATA
     $db = DB::getInstance();
-    $sitedata = $db->query('SELECT * FROM site_data');
-    if (!$sitedata->count()) {
-        echo 'error';
-    } else {
-        foreach ($sitedata->results() as $siteinfo) {
-            $sitename = $siteinfo->name;
-            $sitedescription = $siteinfo->description;
-            $logo = $siteinfo->logo;
-            if (!$logo) {
-                $logo = '/images/logo/defaultlogo.jpg';
-            }
-            $sitelogo = "<img id=\"site_logo\" src=\"" . $logo . "\" alt=\"" . $sitename . "\" title=\"" . $sitename . "\" />";
-            $verify = $siteinfo->verify;
-            if ($verify == 0) {
-                $active = 1;
-            } else {
-                $active = 0;
-            }
-            $verify_email = $siteinfo->verify_email;
-            $welcome = $siteinfo->welcome;
-            $welcome_email = $siteinfo->welcome_email;
+    $sitedata = $db->get('site_data', array('id', '=', '1'));
+    if($sitedata->count()) {
+        $db->_sitedata = $sitedata->first();
+        $verify = $db->_sitedata->verify;
+        if ($verify == 0) {
+            $active = 1;
+        } else {
+            $active = 0;
         }
+        $verify_email = $db->_sitedata->verify_email;
+        $welcome = $db->_sitedata->welcome;
+        $welcome_email = $db->_sitedata->welcome_email;
     }
 
     // GET SALT EXTENSIONS
@@ -78,7 +67,8 @@ if (Token::check(Token::generate())) {
             'salt' => $salt,
             'regdatetime' => $datetime,
             'account_status' => $active,
-            'user_group' => 1
+            'user_group' => 1,
+            'accept_cookies' => $regcookie
         ));
 
         // GET NEW USER ACCESS DATA

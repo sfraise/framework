@@ -33,7 +33,7 @@ if (Token::check(Token::generate())) {
     $fullpass = $prefix . $newpass . $suffix;
     $hashpass = Hash::make($fullpass, $salt);
     $datetime = date('Y-m-d H:i:s');
-echo $fullpass;
+
     $user = new userAccess();
 
     // UPDATE THE DATABASE

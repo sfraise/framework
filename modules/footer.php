@@ -7,11 +7,13 @@
  */
 ?>
 <div class="footerwrapper">
-    <?php if($user->exists() && $acceptcookies == 1) { ?>
-    <div class="footer_cookie_notice">
-        We use cookies to improve your experience. To disable using cookies on this site please <a href="#" id="footer_prevent_cookies">Click Here</a>.
+    <div id="footer_cookie_notice">
+        <?php if($user->exists() && $acceptcookies == 1) { ?>
+            We use cookies to improve your experience. To disable using cookies on this site please click here <a href="#" id="footer_prevent_cookies">DISABLE COOKIES</a>.
+        <?php } elseif($user->exists() && $acceptcookies == 0) { ?>
+            We use cookies to improve your experience. To enable using cookies on this site please click here <a href="#" id="footer_enable_cookies">ENABLE COOKIES</a>.
+        <?php } ?>
     </div>
-    <?php } ?>
     <div class="footer_tos">
         <a href="#" class="toslb">Terms of Service</a>
     </div>
