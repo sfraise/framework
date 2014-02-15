@@ -5,7 +5,11 @@
     <meta name="description" content="<?php echo $sitedescription; ?>" />
 
     <!-- STYLESHEETS -->
-    <link type="text/css" rel="stylesheet" href="template/css/style.css"/>
+    <?php if(Input::get('view') !== 'iframe') { ?>
+        <link type="text/css" rel="stylesheet" href="template/css/style.css"/>
+    <?php } else { ?>
+        <link type="text/css" rel="stylesheet" href="template/css/iframestyle.css"/>
+    <?php } ?>
 
     <!-- SCRIPTS -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
@@ -18,15 +22,29 @@
 <div class="pagewrapper">
     <!-- HEADER (modules/header.php) -->
     <div class="header">
-        <?php require_once 'modules/header.php'; ?>
+        <?php
+            if(Input::get('view') !== 'iframe') {
+                require_once 'modules/header.php';
+            }
+        ?>
     </div>
     <!-- MAIN OPTION VIEWS (views/'option'/index.php) -->
     <div class="main">
+        <?php if(Input::get('view') == 'iframe') { ?>
+            <div class="standardlbtop">
+                <span class="ifcolorboxclose"></span>
+                <div style="clear:both;"></div>
+            </div>
+        <?php } ?>
         <?php require_once 'helpers/router.php'; ?>
     </div>
     <!-- FOOTER (modules/footer.php) -->
     <div class="footer">
-        <?php require_once 'modules/footer.php'; ?>
+        <?php
+        if(Input::get('view') !== 'iframe') {
+                require_once 'modules/footer.php';
+        }
+        ?>
     </div>
 </div>
 </body>

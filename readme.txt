@@ -89,3 +89,9 @@ GET USER DETAILS
     $user = new userDetails(*email or id*);
     $data = $user->data();
     (eg. $data->city would return the user's city)
+
+LOAD CONTENT IN AN IFRAME
+    The template is set up to strip out the header and footer and replace the style.css with iframestyle.css if you load content through an iframe.
+    This can be useful if you wish to load modal content through the framework instead of just calling inline or as a file.
+    To do this simply add &view=iframe to the end of the url.
+    (eg. href="index.php?option=tos&view=iframe)

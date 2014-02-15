@@ -227,6 +227,11 @@ body {
     cursor: pointer;
 }
 
+.footerwrapper {
+    text-align: center;
+    font-size: 11px;
+}
+
 /*** MODAL WINDOW STYLES ***/
 /* DO NOT ALTER */
 #colorbox, #cboxOverlay, #cboxWrapper {
@@ -324,7 +329,7 @@ body {
     float: left;
 }
 
-.colorboxclose {
+.colorboxclose, .ifcolorboxclose {
     float: right;
     background: url('/images/close.png') no-repeat;
     width: 26px;

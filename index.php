@@ -22,11 +22,15 @@ if(!$user->exists()) {
     }
     // INSTANTIATE THE USER CLASS AND GET USER ID
     $myuserdata = $user->data();
+
     if(isset($myuserdata->id)) {
         $myid = $myuserdata->id;
     } else {
         $myid = 0;
     }
+
+    // CHECK IF USER ACCEPTS COOKIES OR NOT (1 FOR YES, 0 FOR NO)
+    $acceptcookies = $myuserdata->accept_cookies;
 }
 
 // SET MY ID TO 0 IF NOT LOGGED IN
