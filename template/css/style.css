@@ -124,6 +124,11 @@ body {
     float: right;
 }
 
+#register_error {
+    float: right;
+    color: #ff0000;
+}
+
 .main {
     margin: 5px 0 5px 0;
 }

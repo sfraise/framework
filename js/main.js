@@ -14,20 +14,22 @@ $(document).ready(function() {
         } else {
             var register_cookies = 0;
         }
-        var register_tos = $('#register_tos').val();
-
-        $('#register_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
-        $.ajax({
-            url: 'helpers/submits/register.php',
-            type: 'POST',
-            data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again, register_cookies: register_cookies, register_tos: register_tos},
-            success: function (data) {
-                $('#register_message').html(data);
-            },
-            error: function (errorThrown) {
-                $('#register_message').html(errorThrown);
-            }
-        });
+        if (!$('input#register_tos').is(':checked')) {
+            $('#register_error').html('You must accept the terms of service!');
+        } else {
+            $('#register_message').html('<img id="ajaxloading" src="/images/loading/loading35.gif" alt="Loading" title="Loading" />');
+            $.ajax({
+                url: 'helpers/submits/register.php',
+                type: 'POST',
+                data: {register_email: register_email, register_firstname: register_firstname, register_lastname: register_lastname, register_password: register_password, register_password_again: register_password_again, register_cookies: register_cookies, register_tos: register_tos},
+                success: function (data) {
+                    $('#register_message').html(data);
+                },
+                error: function (errorThrown) {
+                    $('#register_message').html(errorThrown);
+                }
+            });
+        }
         return false;
     });
 
