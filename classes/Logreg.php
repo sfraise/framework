@@ -33,10 +33,10 @@ class logReg
                                 <input type=\"password\" name=\"register_password_again\" id=\"register_password_again\" placeholder=\"Retype Password\"><br />
                                 <input type=\"checkbox\" name=\"register_cookies\" id=\"register_cookies\" value=\"1\" /> We use cookies to improve your experience, check to accept cookies<br />
                                 <input type=\"checkbox\" name=\"register_tos\" id=\"register_tos\" value=\"1\" /> I agree to the <a href=\"index.php?option=tos\" target=\"_blank\">terms of service</a><br />
+                                <div id=\"register_error\"></div>
                                 <div id=\"register_submit\" class=\"submit_button\">
                                     Submit
                                 </div>
-                                <div id=\"register_message\"></div>
                             </div>
                         </div>
                     </div>";
