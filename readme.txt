@@ -12,6 +12,11 @@ multiple user types (manager, sales, type2, type1), and basic administrator pane
 * DOCUMENTATION
 */
 
+// DEFAULT ADMIN LOGIN
+----------------------
+USERNAME: admin@admin.com
+PASSWORD: administrator
+
 // BASIC STRUCTURE
 ------------------
 The main site and the admin section are separated using different index.php, template, modules, and js file.
@@ -59,6 +64,7 @@ SITE INFO:
 MANAGE USERS:
     - Promote or demote a user's type
     - Change a user's password
+    ** NOTE: To promote a new user they must first register as a regular member, at which point a manager can promote them from the admin panel.
 
 // COMMON FUNCTIONS
 -------------------
